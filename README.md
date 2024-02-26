@@ -14,7 +14,7 @@ This repository contains a simple REST API application that provides anime infor
 
 ## Introduction
 
-This is a basic REST API application built using [Spring Boot](https://spring.io/projects/spring-boot) framework and [Maven](https://maven.apache.org). The application allows users to get information about sunset and sunrise time information for a coordinates by making HTTP requests to predefined endpoints.
+This is a basic REST API application built using [Spring Boot](https://spring.io/projects/spring-boot) framework and [Maven](https://maven.apache.org). The application allows users to get information about anime and allows posting critics.
 
 ## Technologies Used
 
@@ -37,23 +37,12 @@ Make sure you have the following installed:
 
 ### Installation
 
-1. Clone the repository:
+Clone the repository:
 
     ```bash
     git clone https://github.com/infxrnx/AnimeCritics
     ```
 
-2. Build the project:
-
-    ```bash
-    mvn clean install
-    ```
-
-3. Run the application:
-
-    ```bash
-    java -jar target/SunsetSunriseAPI-0.0.1-SNAPSHOT.jar
-    ```
 
 The application will start on `http://localhost:8080`.
 
