@@ -3,7 +3,6 @@ package com.project.anime.service;
 import com.project.anime.entity.Critics;
 import com.project.anime.repository.CriticsRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Service
 public class CriticsService {
@@ -13,7 +12,7 @@ public class CriticsService {
     }
     private final CriticsRepository criticsRepository;
 
-    public @ResponseBody String postCritics(Critics critics){
+    public String postCritics(Critics critics){
         criticsRepository.save(critics);
         return "saved";
     }
