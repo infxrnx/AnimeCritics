@@ -3,10 +3,8 @@ package com.project.anime.controller;
 import com.project.anime.dto.ExternalApiRequest;
 import com.project.anime.dto.ExternalApiResponse;
 import com.project.anime.entity.Critics;
-import com.project.anime.repository.CriticsRepository;
 import com.project.anime.service.CriticsService;
 import com.project.anime.service.ExternalApiService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +16,7 @@ public class AnimeController {
 
 
     @PostMapping("/postCritics")
-    public @ResponseBody String postCritics(@RequestParam String text,
+    public String postCritics(@RequestParam String text,
                                             @RequestParam String title){
         return criticsService.postCritics(new Critics(text, title));
     }
