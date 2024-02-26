@@ -1,6 +1,6 @@
-# Sunset and Sunrise API application
+# Anime API application
 
-This repository contains a simple REST API application that provides sunset and sunrise information based on latitude, longitude and date.
+This repository contains a simple REST API application that provides anime information and allows to post critics.
 
 ## Table of Contents
 
@@ -11,7 +11,6 @@ This repository contains a simple REST API application that provides sunset and 
     - [Installation](#installation)
 - [Usage](#usage)
 - [Endpoints](#endpoints)
-- [Configuration](#configuration)
 
 ## Introduction
 
