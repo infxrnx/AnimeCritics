@@ -13,23 +13,23 @@ public class AnimeController {
     private final ExternalApiService externalApiService;
 
     private final CriticsService criticsService;
-
-
-    @PostMapping("/postCritics")
-    public String postCritics(@RequestParam String text,
-                                            @RequestParam String title){
-        return criticsService.postCritics(new Critics(text, title));
-    }
-
-    @GetMapping("/getCritics")
-    public Iterable<Critics> getCritics(@RequestParam(required = false) String title){
-        return criticsService.getCritics(title);
-    }
-
     public AnimeController(ExternalApiService externalApiService, CriticsService criticsService){
         this.externalApiService = externalApiService;
         this.criticsService = criticsService;
     }
+
+    @PostMapping("/critics")
+    public String postCritics(@RequestParam String text,
+                              @RequestParam String title){
+        return criticsService.postCritics(new Critics(text, title));
+    }
+
+    @GetMapping("/critics")
+    public Iterable<Critics> getCritics(@RequestParam(required = false) String title){
+        return criticsService.getCritics(title);
+    }
+
+
 
     @GetMapping("/anime/{animeTitle}")
     public ExternalApiResponse getAnimeByTitle(@PathVariable String animeTitle){
