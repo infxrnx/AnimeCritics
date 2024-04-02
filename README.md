@@ -1,6 +1,6 @@
 # Anime API application
 
-This repository contains a simple REST API application that provides anime information and allows to post critics.
+This repository contains a simple REST API application that provides anime information and allows to post review.
 
 ## Table of Contents
 
@@ -14,7 +14,7 @@ This repository contains a simple REST API application that provides anime infor
 
 ## Introduction
 
-This is a basic REST API application built using [Spring Boot](https://spring.io/projects/spring-boot) framework and [Maven](https://maven.apache.org). The application allows users to get information about anime and allows posting critics.
+This is a basic REST API application built using [Spring Boot](https://spring.io/projects/spring-boot) framework and [Maven](https://maven.apache.org). The application allows users to get information about anime and allows posting review.
 
 ## Technologies Used
 
@@ -60,7 +60,7 @@ The application will start on `http://localhost:8080`.
   ```http
   GET /api/anime/naruto
   ```
-- **Get critics by title:**
+- **Get review by title:**
 
   ```http
   GET /api/getCritics?title=TITLE
@@ -70,7 +70,7 @@ The application will start on `http://localhost:8080`.
   ```http
   GET /api/getCritics?title=bleach
   ```
-- **Post critics about specific anime:**
+- **Post review about specific anime:**
 
   ```http
   POST /api/postCritics?title=TITLE&text=TEXT

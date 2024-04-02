@@ -1,39 +1,53 @@
 package com.project.anime.controller;
 
-import com.project.anime.dto.ExternalApiRequest;
-import com.project.anime.dto.ExternalApiResponse;
-import com.project.anime.entity.Critics;
-import com.project.anime.service.CriticsService;
-import com.project.anime.service.ExternalApiService;
+import com.project.anime.dto.anime.CreateAnime;
+
+import com.project.anime.entity.Anime;
+import com.project.anime.service.AnimeService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/anime")
 public class AnimeController {
-    private final ExternalApiService externalApiService;
 
-    private final CriticsService criticsService;
-    public AnimeController(ExternalApiService externalApiService, CriticsService criticsService){
-        this.externalApiService = externalApiService;
-        this.criticsService = criticsService;
+    private final AnimeService animeService;
+    public AnimeController(AnimeService animeService){
+        this.animeService = animeService;
+    }
+    @PostMapping
+    public ResponseEntity<Void> createAnime(@RequestBody CreateAnime newAnime){
+        animeService.createAnime(newAnime);
+        return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/critics")
-    public String postCritics(@RequestParam String text,
-                              @RequestParam String title){
-        return criticsService.postCritics(new Critics(text, title));
+    @GetMapping
+    public ResponseEntity<List<Anime>> getAllAnime(){
+        return ResponseEntity.ok(animeService.getAllAnime());
     }
 
-    @GetMapping("/critics")
-    public Iterable<Critics> getCritics(@RequestParam(required = false) String title){
-        return criticsService.getCritics(title);
+    @GetMapping("/{id}")
+    public ResponseEntity<Anime> getAnimeById(@PathVariable Integer id){
+        return ResponseEntity.of(animeService.getAnimeById(id)); //404 if not present()
     }
 
-
-
-    @GetMapping("/anime/{animeTitle}")
-    public ExternalApiResponse getAnimeByTitle(@PathVariable String animeTitle){
-        return externalApiService.getAnimeByTitle(new ExternalApiRequest(animeTitle));
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateAnime(@PathVariable Integer id, @RequestBody Anime newAnime){
+        animeService.updateAnime(id, newAnime);
+        return ResponseEntity.ok().build();
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> partialUpdateAnime(@PathVariable Integer id, @RequestBody Anime updates){
+        animeService.partialUpdateAnime(id, updates);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAnime(@PathVariable Integer id){
+        animeService.deleteAnime(id);
+        return ResponseEntity.ok().build();
+    }
 }

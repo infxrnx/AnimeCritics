@@ -1,4 +1,4 @@
-package com.project.anime.dto;
+package com.project.anime.dto.externalapi;
 
 public class ExternalApiRequest {
 
