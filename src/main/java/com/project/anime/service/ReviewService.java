@@ -39,6 +39,7 @@ public class ReviewService {
     }
 
     public void updateReview(Integer id, Review newReview){
+        newReview.setId(id);
         reviewRepository.save(newReview);
     }
 
