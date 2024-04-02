@@ -8,7 +8,6 @@ import com.project.anime.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -22,8 +21,8 @@ public class ReviewService {
     }
 
     public void createReview(CreateReview review){
-        Review newReview = new Review(review.title, review.text, review.grade);
-        Anime anime = animeRepository.findById(review.animeId).orElseThrow(() -> new RuntimeException("Anime not found"));
+        Review newReview = new Review(review.getTitle(), review.getText(), review.getGrade());
+        Anime anime = animeRepository.findById(review.getAnimeId()).orElseThrow(() -> new RuntimeException("Anime not found"));
         newReview.setAnime(anime);
         anime.getReviews().add(newReview);
         anime.setReviewCount(anime.getReviewCount() + 1);

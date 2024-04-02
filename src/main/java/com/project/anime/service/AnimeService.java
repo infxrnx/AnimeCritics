@@ -17,7 +17,7 @@ public class AnimeService {
     }
 
     public void createAnime(CreateAnime anime){
-        Anime newAnime = new Anime(anime.title, anime.startDate, anime.endDate);
+        Anime newAnime = new Anime(anime.getTitle(), anime.getStartDate(), anime.getEndDate());
         animeRepository.save(newAnime);
     }
 

@@ -1,12 +1,10 @@
 package com.project.anime.service;
 
-import com.project.anime.controller.NominationController;
 import com.project.anime.dto.nomination.CreateNomination;
 import com.project.anime.entity.Anime;
 import com.project.anime.entity.Nomination;
 import com.project.anime.repository.AnimeRepository;
 import com.project.anime.repository.NominationRepository;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +21,7 @@ public class NominationService {
     }
 
     public void createNomination(CreateNomination newNominationData){
-        Nomination newNomination = new Nomination(newNominationData.name);
+        Nomination newNomination = new Nomination(newNominationData.getName());
         nominationRepository.save(newNomination);
     }
 
