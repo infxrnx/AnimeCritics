@@ -58,8 +58,8 @@ public class NominationService {
 
         Anime anime = animeRepository.findById(animeId).orElseThrow(() -> new RuntimeException("Аниме с ID " + animeId + " не найдено"));
 
-        nomination.getCandidates().add(anime);
-        anime.getNominations().add(nomination);
+        nomination.addCandidates(anime);
+        anime.addNomination(nomination);
         nominationRepository.save(nomination);
     }
 }

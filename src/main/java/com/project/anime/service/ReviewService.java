@@ -24,7 +24,7 @@ public class ReviewService {
         Review newReview = new Review(review.getTitle(), review.getText(), review.getGrade());
         Anime anime = animeRepository.findById(review.getAnimeId()).orElseThrow(() -> new RuntimeException("Anime not found"));
         newReview.setAnime(anime);
-        anime.getReviews().add(newReview);
+        anime.addReview(newReview);
         anime.setReviewCount(anime.getReviewCount() + 1);
         anime.setTotalRating(anime.getTotalRating() + newReview.getGrade());
         reviewRepository.save(newReview);

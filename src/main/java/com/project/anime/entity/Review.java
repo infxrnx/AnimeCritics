@@ -2,8 +2,12 @@ package com.project.anime.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@NoArgsConstructor
 public class Review {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -20,54 +24,9 @@ public class Review {
     @JoinColumn(name="anime_id")
     private Anime anime;
 
-    public Review(String title, String text, Byte grade) {
+    public Review(String title, String text, Byte grade){
         this.title = title;
         this.text = text;
         this.grade = grade;
-    }
-
-
-    public Review() {
-
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public Byte getGrade() {
-        return grade;
-    }
-
-    public void setGrade(Byte animationGrade) {
-        this.grade = animationGrade;
-    }
-
-    public Anime getAnime() {
-        return anime;
-    }
-
-    public void setAnime(Anime anime) {
-        this.anime = anime;
     }
 }
