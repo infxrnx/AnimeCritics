@@ -2,108 +2,59 @@ package com.project.anime.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+
+@SuppressWarnings("ALL")
+@Data
+@NoArgsConstructor
 @Entity
 public class Anime {
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
 
-    private String title;
+  private String title;
 
-    private Date startDate;
+  private Date startDate;
 
-    private Date endDate;
+  private Date endDate;
 
-    private Integer totalRating;
+  private Integer totalRating;
 
-    private Integer reviewCount;
+  private Integer reviewCount;
 
-    @JsonIgnoreProperties({"anime"})
-    @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL)
-    private List<Review> reviews = new ArrayList<>();
-    @ManyToMany(mappedBy = "candidates")
-    private List<Nomination> nominations = new ArrayList<>();
+  @JsonIgnoreProperties({"anime", "candidates"})
+  @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Review> reviews = new ArrayList<>();
 
-    public Anime(){
+  @ManyToMany(mappedBy = "candidates", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  private List<Nomination> nominations = new ArrayList<>();
 
-    }
+  public Anime(String title, Date startDate, Date endDate) {
+    this.title = title;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.totalRating = 0;
+    this.reviewCount = 0;
+  }
 
-    public Integer getId() {
-        return id;
-    }
+  public void addReview(Review review) {
+    reviews.add(review);
+  }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public Integer getTotalRating() {
-        return totalRating;
-    }
-
-    public void setTotalRating(Integer totalRating) {
-        this.totalRating = totalRating;
-    }
-
-    public Integer getReviewCount() {
-        return reviewCount;
-    }
-
-    public void setReviewCount(Integer reviewCount) {
-        this.reviewCount = reviewCount;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> revies) {
-        this.reviews = revies;
-    }
-
-    public List<Nomination> getNominations() {
-        return nominations;
-    }
-
-    public void setNominations(List<Nomination> nominations) {
-        this.nominations = nominations;
-    }
-
-
-    public Anime(String title, Date startDate, Date endDate) {
-        this.title = title;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.totalRating = 0;
-        this.reviewCount = 0;
-    }
+  public void addNomination(Nomination nomination) {
+    nominations.add(nomination);
+  }
 }

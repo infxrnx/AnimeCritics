@@ -3,52 +3,69 @@ package com.project.anime.controller;
 import com.project.anime.dto.review.CreateReview;
 import com.project.anime.entity.Review;
 import com.project.anime.service.ReviewService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
 @RequestMapping("/api/reviews")
 public class ReviewController {
-    private final ReviewService reviewService;
+  private static final String DELETE_ERROR_MESSAGE = "Error while deleting!";
+  private static final String DELETE_SUCCESS_MESSAGE = "Deleted successfully!";
+  private static final String UPDATE_ERROR_MESSAGE = "Error while updating!";
+  private static final String UPDATE_SUCCESS_MESSAGE = "Updated successfully!";
+  private static final String GET_ERROR_MESSAGE = "Error while getting!";
+  private static final String CREATE_ERROR_MESSAGE = "Error while creating!";
+  private static final String CREATE_SUCCESS_MESSAGE = "Created successfully!";
+  private final ReviewService reviewService;
 
-    public ReviewController(ReviewService reviewService) {
-        this.reviewService = reviewService;
-    }
-    @PostMapping
-    public ResponseEntity<Void> createReview(@RequestBody CreateReview review){
-        reviewService.createReview(review);
-        return ResponseEntity.ok().build();
-    }
+  public ReviewController(ReviewService reviewService) {
+    this.reviewService = reviewService;
+  }
 
-    @GetMapping
-    public ResponseEntity<List<Review>> getAllReviews(){
-        return ResponseEntity.ok(reviewService.getAllReviews());
-    }
+  @PostMapping
+  public ResponseEntity<String> createReview(@RequestBody CreateReview review) {
+    reviewService.createReview(review);
+    return new ResponseEntity<>(CREATE_SUCCESS_MESSAGE, HttpStatus.OK);
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Review> getReviewById(@PathVariable Integer id){
-        return ResponseEntity.of(reviewService.getReviewById(id)); //404 if not present()
-    }
+  @GetMapping
+  public ResponseEntity<List<Review>> getAllReviews() {
+    return new ResponseEntity<>(reviewService.getAllReviews(), HttpStatus.OK);
+  }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateReview(@PathVariable Integer id, Review newReview){
-        reviewService.updateReview(id, newReview);
-        return ResponseEntity.ok().build();
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<Review> getReviewById(@PathVariable Integer id) {
+    return new ResponseEntity<>(reviewService.getReviewById(id),
+        HttpStatus.OK); //404 if not present()
+  }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Void> partialUpdateReview(@PathVariable Integer id, @RequestBody Review updates){
-        reviewService.partialUpdateReview(id, updates);
-        return ResponseEntity.ok().build();
-    }
+  @PutMapping("/{id}")
+  public ResponseEntity<String> updateReview(@PathVariable Integer id, Review newReview) {
+    reviewService.updateReview(id, newReview);
+    return new ResponseEntity<>(UPDATE_SUCCESS_MESSAGE, HttpStatus.OK);
+  }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteReview(@PathVariable Integer id){
-        reviewService.deleteReview(id);
-        return ResponseEntity.ok().build();
-    }
+  @PatchMapping("/{id}")
+  public ResponseEntity<String> partialUpdateReview(@PathVariable Integer id,
+                                                    @RequestBody Review updates) {
+    reviewService.partialUpdateReview(id, updates);
+    return new ResponseEntity<>(UPDATE_SUCCESS_MESSAGE, HttpStatus.OK);
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<String> deleteReview(@PathVariable Integer id) {
+    reviewService.deleteReview(id);
+    return new ResponseEntity<>(DELETE_SUCCESS_MESSAGE, HttpStatus.OK);
+  }
 }

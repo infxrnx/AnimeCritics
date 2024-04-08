@@ -1,65 +1,85 @@
 package com.project.anime.service;
 
+import com.project.anime.aop.annotation.Logging;
+import com.project.anime.aop.exception.ResourceNotFoundException;
+import com.project.anime.cache.CacheEntity;
 import com.project.anime.dto.nomination.CreateNomination;
 import com.project.anime.entity.Anime;
 import com.project.anime.entity.Nomination;
 import com.project.anime.repository.AnimeRepository;
 import com.project.anime.repository.NominationRepository;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
+@Logging
 @Service
 public class NominationService {
-    private final NominationRepository nominationRepository;
-    private final AnimeRepository animeRepository;
+  private final NominationRepository nominationRepository;
+  private final AnimeRepository animeRepository;
+  private final CacheEntity<Integer, Nomination> cache;
 
-    public NominationService(NominationRepository nominationRepository, AnimeRepository animeRepository) {
-        this.nominationRepository = nominationRepository;
-        this.animeRepository = animeRepository;
+  public NominationService(NominationRepository nominationRepository,
+                           AnimeRepository animeRepository,
+                           CacheEntity<Integer, Nomination> cache) {
+    this.nominationRepository = nominationRepository;
+    this.animeRepository = animeRepository;
+    this.cache = cache;
+  }
+
+  public void createNomination(CreateNomination newNominationData) {
+    Nomination newNomination = new Nomination(newNominationData.getName());
+    nominationRepository.save(newNomination);
+  }
+
+  public List<Nomination> getAllNominations() {
+    return nominationRepository.findAll();
+  }
+
+  public Nomination getNominationById(Integer id) {
+    Nomination nomination = cache.get(id);
+    if (nomination == null) {
+      nomination = nominationRepository.findById(id).orElseThrow(
+          () -> new ResourceNotFoundException("Nomination (with id = " + id + ") not found"));
     }
+    return nomination;
+  }
 
-    public void createNomination(CreateNomination newNominationData){
-        Nomination newNomination = new Nomination(newNominationData.getName());
-        nominationRepository.save(newNomination);
+  public void updateNomination(Integer id, Nomination newNomination) {
+    newNomination.setId(id);
+    cache.remove(id);
+    nominationRepository.save(newNomination);
+  }
+
+  public void partialUpdateNomination(Integer id, Nomination updates) {
+    Nomination nomination = nominationRepository.findById(id)
+        .orElseThrow(
+            () -> new ResourceNotFoundException("Nomination (with id = " + id + ") not found"));
+
+    if (updates.getName() != null) {
+      nomination.setName(updates.getName());
     }
+    cache.remove(id);
+    nominationRepository.save(nomination);
+  }
 
-    public List<Nomination> getAllNominations(){
-        return nominationRepository.findAll();
-    }
+  public void deleteNomination(Integer id) {
+    cache.remove(id);
+    nominationRepository.deleteById(id);
+  }
 
-    public Optional<Nomination> getNominationById(Integer id){
-        return nominationRepository.findById(id);
-    }
+  public void addAnimeToNomination(Integer nominationId, Integer animeId) {
 
-    public void updateNomination(Integer id, Nomination newNomination){
-        newNomination.setId(id);
-        nominationRepository.save(newNomination);
-    }
+    Nomination nomination = nominationRepository.findById(nominationId)
+        .orElseThrow(() -> new ResourceNotFoundException(
+            "Nomination (with id = " + nominationId + ") not found"));
 
-    public void partialUpdateNomination(Integer id, Nomination updates){
-        Nomination nomination = nominationRepository.findById(id).orElseThrow(() -> new RuntimeException("Nomination not found"));
+    Anime anime = animeRepository.findById(animeId)
+        .orElseThrow(
+            () -> new ResourceNotFoundException("Anime (with id = " + animeId + ") not found"));
 
-        if (updates.getName() != null){
-            nomination.setName(updates.getName());
-        }
-
-        nominationRepository.save(nomination);
-    }
-
-    public void deleteNomination(Integer id){
-        nominationRepository.deleteById(id);
-    }
-
-    public void addAnimeToNomination(Integer nominationId, Integer animeId) {
-
-        Nomination nomination = nominationRepository.findById(nominationId).orElseThrow(() -> new RuntimeException("Номинация с ID " + nominationId + " не найдена"));
-
-        Anime anime = animeRepository.findById(animeId).orElseThrow(() -> new RuntimeException("Аниме с ID " + animeId + " не найдено"));
-
-        nomination.getCandidates().add(anime);
-        anime.getNominations().add(nomination);
-        nominationRepository.save(nomination);
-    }
+    nomination.addCandidates(anime);
+    anime.addNomination(nomination);
+    nominationRepository.save(nomination);
+    cache.remove(nominationId);
+  }
 }
