@@ -1,0 +1,2 @@
+08:18:07.558 INFO  c.p.anime.aop.aspect.LoggingAspect - Called method getAllAnime() with args: []
+08:18:07.618 INFO  c.p.anime.aop.aspect.LoggingAspect - Method getAllAnime returned value: [] in 59 ms

@@ -2,39 +2,40 @@ package com.project.anime.dto.externalapi;
 
 public class ExternalApiResponse {
 
-    private String title;
+  private String title;
 
-    private Integer  episodes;
+  private Integer episodes;
 
-    private String status;
+  private String status;
 
-    public String getTitle() {
-        return title;
-    }
+  public ExternalApiResponse(String title, Integer episodes, String status) {
+    this.title = title;
+    this.episodes = episodes;
+    this.status = status;
+  }
 
-    public Integer getEpisodes() {
-        return episodes;
-    }
+  public String getTitle() {
+    return title;
+  }
 
-    public String getStatus() {
-        return status;
-    }
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-    public void setEpisodes(Integer episodes) {
-        this.episodes = episodes;
-    }
+  public Integer getEpisodes() {
+    return episodes;
+  }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  public void setEpisodes(Integer episodes) {
+    this.episodes = episodes;
+  }
 
-    public ExternalApiResponse(String title, Integer episodes, String status){
-        this.title = title;
-        this.episodes = episodes;
-        this.status = status;
-    }
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
 }
 
