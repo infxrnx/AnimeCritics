@@ -44,17 +44,6 @@ public class ReviewService {
     if (review == null) {
       review = reviewRepository.findById(id).orElseThrow(() -> new RuntimeException("q"));
     }
-
-<<<<<<< Updated upstream
-    public void createReview(CreateReview review){
-        Review newReview = new Review(review.getTitle(), review.getText(), review.getGrade());
-        Anime anime = animeRepository.findById(review.getAnimeId()).orElseThrow(() -> new RuntimeException("Anime not found"));
-        newReview.setAnime(anime);
-        anime.addReview(newReview);
-        anime.setReviewCount(anime.getReviewCount() + 1);
-        anime.setTotalRating(anime.getTotalRating() + newReview.getGrade());
-        reviewRepository.save(newReview);
-=======
     return review;
   }
 
@@ -70,7 +59,6 @@ public class ReviewService {
 
     if (review.getTitle() != null) {
       review.setTitle(updates.getTitle());
->>>>>>> Stashed changes
     }
     if (review.getText() != null) {
       review.setText(updates.getText());

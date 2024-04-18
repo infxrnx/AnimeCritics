@@ -1,12 +1,6 @@
 package com.project.anime.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-<<<<<<< Updated upstream
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-=======
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
->>>>>>> Stashed changes
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
@@ -40,19 +33,9 @@ public class Nomination {
       inverseJoinColumns = {@JoinColumn(name = "anime_id")})
   private List<Anime> candidates = new ArrayList<>();
 
-<<<<<<< Updated upstream
     public Nomination(String name){
         this.name = name;
     }
 
     public void addCandidates(Anime anime){this.candidates.add(anime);}
-=======
-  public Nomination(String name) {
-    this.name = name;
-  }
-
-  public void addCandidates(Anime anime) {
-    this.candidates.add(anime);
-  }
->>>>>>> Stashed changes
 }

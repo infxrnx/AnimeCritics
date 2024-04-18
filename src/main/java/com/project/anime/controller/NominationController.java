@@ -1,6 +1,7 @@
 package com.project.anime.controller;
 
 import com.project.anime.dto.nomination.CreateNomination;
+import com.project.anime.entity.Anime;
 import com.project.anime.entity.Nomination;
 import com.project.anime.service.NominationService;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -74,5 +76,11 @@ public class NominationController {
                                                      @PathVariable Integer animeId) {
     nominationService.addAnimeToNomination(nominationId, animeId);
     return new ResponseEntity<>(UPDATE_SUCCESS_MESSAGE, HttpStatus.OK);
+  }
+
+  @GetMapping("/filter/{nominationId}")
+  public ResponseEntity<List<Anime>> findAnimeInNominationWithAverageRatingGreaterThanThreshold(@PathVariable Integer nominationId, @RequestParam
+  Integer min){
+    return new ResponseEntity<>(nominationService.findAnimeInNominationWithAverageRatingGreaterThanThreshold(nominationId, min), HttpStatus.OK);
   }
 }

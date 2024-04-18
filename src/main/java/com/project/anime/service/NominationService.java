@@ -67,43 +67,19 @@ public class NominationService {
     nominationRepository.deleteById(id);
   }
 
-  public void addAnimeToNomination(Integer nominationId, Integer animeId) {
-
-    Nomination nomination = nominationRepository.findById(nominationId)
-        .orElseThrow(() -> new ResourceNotFoundException(
-            "Nomination (with id = " + nominationId + ") not found"));
-
-    Anime anime = animeRepository.findById(animeId)
-        .orElseThrow(
-            () -> new ResourceNotFoundException("Anime (with id = " + animeId + ") not found"));
-
-<<<<<<< Updated upstream
-        if (updates.getName() != null){
-            nomination.setName(updates.getName());
-        }
-
-        nominationRepository.save(nomination);
-    }
-
-    public void deleteNomination(Integer id){
-        nominationRepository.deleteById(id);
-    }
-
     public void addAnimeToNomination(Integer nominationId, Integer animeId) {
 
         Nomination nomination = nominationRepository.findById(nominationId).orElseThrow(() -> new RuntimeException("Номинация с ID " + nominationId + " не найдена"));
 
         Anime anime = animeRepository.findById(animeId).orElseThrow(() -> new RuntimeException("Аниме с ID " + animeId + " не найдено"));
 
-        nomination.addCandidates(anime);
-        anime.addNomination(nomination);
-        nominationRepository.save(nomination);
-    }
-=======
     nomination.addCandidates(anime);
     anime.addNomination(nomination);
     nominationRepository.save(nomination);
     cache.remove(nominationId);
   }
->>>>>>> Stashed changes
+
+  public List<Anime> findAnimeInNominationWithAverageRatingGreaterThanThreshold(Integer nominationId, Integer min){
+    return nominationRepository.findAnimeInNominationWithAverageRatingGreaterThanThreshold(nominationId, min);
+  }
 }

@@ -40,14 +40,7 @@ public class AnimeController {
   }
 
   @GetMapping
-  public ResponseEntity<List<Anime>> getAllAnime(
-      @RequestParam(required = false) Double minRating,
-      @RequestParam(required = false, defaultValue = "10")
-      Double maxRating) {
-    if (minRating != null && maxRating != null) {
-      return new ResponseEntity<>(animeService.getAllAnimeWithCertainRating(minRating, maxRating),
-          HttpStatus.OK);
-    }
+  public ResponseEntity<List<Anime>> getAllAnime() {
     return new ResponseEntity<>(animeService.getAllAnime(), HttpStatus.OK);
   }
 
