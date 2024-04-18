@@ -70,10 +70,10 @@ public class NominationService {
   public void addAnimeToNomination(Integer nominationId, Integer animeId) {
 
     Nomination nomination = nominationRepository.findById(nominationId)
-        .orElseThrow(() -> new RuntimeException("Номинация с ID " + nominationId + " не найдена"));
+        .orElseThrow(() -> new ResourceNotFoundException("Номинация с ID " + nominationId + " не найдена"));
 
     Anime anime = animeRepository.findById(animeId)
-        .orElseThrow(() -> new RuntimeException("Аниме с ID " + animeId + " не найдено"));
+        .orElseThrow(() -> new ResourceNotFoundException("Аниме с ID " + animeId + " не найдено"));
 
     nomination.addCandidates(anime);
     anime.addNomination(nomination);

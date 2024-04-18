@@ -33,10 +33,6 @@ public class ExternalApiService {
       ResponseEntity<String> response =
           restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
       JsonNode jsonNode = objectMapper.readTree(response.getBody());
-
-      Integer id = jsonNode.get("data").get(0).get("mal_id").asInt();
-      url = "https://api.jikan.moe/v4/anime/" + id + "/relations";
-      response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
       return new ExternalApiResponse(
           jsonNode.get("data").get(0).get("titles").get(0).get("title").asText(),
           jsonNode.get("data").get(0).get("episodes").asInt(),

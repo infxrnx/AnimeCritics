@@ -1,5 +1,6 @@
 package com.project.anime.controller;
 
+import com.project.anime.aop.exception.NotImplementedException;
 import com.project.anime.dto.anime.CreateAnime;
 import com.project.anime.entity.Anime;
 import com.project.anime.service.AnimeService;
@@ -20,12 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/anime")
 public class AnimeController {
-  private static final String DELETE_ERROR_MESSAGE = "Error while deleting!";
   private static final String DELETE_SUCCESS_MESSAGE = "Deleted successfully!";
-  private static final String UPDATE_ERROR_MESSAGE = "Error while updating!";
   private static final String UPDATE_SUCCESS_MESSAGE = "Updated successfully!";
-  private static final String GET_ERROR_MESSAGE = "Error while getting!";
-  private static final String CREATE_ERROR_MESSAGE = "Error while creating!";
   private static final String CREATE_SUCCESS_MESSAGE = "Created successfully!";
   private final AnimeService animeService;
 
@@ -68,5 +65,10 @@ public class AnimeController {
   public ResponseEntity<String> deleteAnime(@PathVariable Integer id) {
     animeService.deleteAnime(id);
     return new ResponseEntity<>(DELETE_SUCCESS_MESSAGE, HttpStatus.OK);
+  }
+
+  @PostMapping("/filter")
+  public ResponseEntity<Void> filterAnime(){
+    throw new NotImplementedException("This endpoint is not implemented.");
   }
 }

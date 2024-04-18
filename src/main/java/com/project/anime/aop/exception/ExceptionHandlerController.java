@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
@@ -22,9 +21,9 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(details, HttpStatus.BAD_REQUEST);
   }
 
-  @ExceptionHandler(ExternalApiFailed.class)
-  public ResponseEntity<ExceptionDetails> externalApi(ExternalApiFailed e) {
+  @ExceptionHandler(NotImplementedException.class)
+  public ResponseEntity<ExceptionDetails> externalApi(NotImplementedException e) {
     ExceptionDetails details = new ExceptionDetails(new Date(), e.getMessage());
-    return new ResponseEntity<>(details, HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(details, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

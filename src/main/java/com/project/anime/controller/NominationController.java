@@ -21,12 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/nominations")
 public class NominationController {
-  private static final String DELETE_ERROR_MESSAGE = "Error while deleting!";
   private static final String DELETE_SUCCESS_MESSAGE = "Deleted successfully!";
-  private static final String UPDATE_ERROR_MESSAGE = "Error while updating!";
   private static final String UPDATE_SUCCESS_MESSAGE = "Updated successfully!";
-  private static final String GET_ERROR_MESSAGE = "Error while getting!";
-  private static final String CREATE_ERROR_MESSAGE = "Error while creating!";
   private static final String CREATE_SUCCESS_MESSAGE = "Created successfully!";
   private final NominationService nominationService;
 

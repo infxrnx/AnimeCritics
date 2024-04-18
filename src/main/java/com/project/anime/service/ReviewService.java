@@ -1,6 +1,7 @@
 package com.project.anime.service;
 
 import com.project.anime.aop.annotation.Logging;
+import com.project.anime.aop.exception.ResourceNotFoundException;
 import com.project.anime.cache.CacheEntity;
 import com.project.anime.dto.review.CreateReview;
 import com.project.anime.entity.Anime;
@@ -42,7 +43,7 @@ public class ReviewService {
   public Review getReviewById(Integer id) {
     Review review = cache.get(id);
     if (review == null) {
-      review = reviewRepository.findById(id).orElseThrow(() -> new RuntimeException("q"));
+      review = reviewRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Review was not found"));
     }
     return review;
   }
@@ -55,7 +56,7 @@ public class ReviewService {
 
   public void partialUpdateReview(Integer id, Review updates) {
     Review review =
-        reviewRepository.findById(id).orElseThrow(() -> new RuntimeException("Review not found"));
+        reviewRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Review not found"));
 
     if (review.getTitle() != null) {
       review.setTitle(updates.getTitle());

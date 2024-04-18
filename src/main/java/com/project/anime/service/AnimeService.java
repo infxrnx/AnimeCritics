@@ -57,11 +57,11 @@ public class AnimeService {
   }
 
   public void partialUpdateAnime(Integer id, Anime updates) {
-    Optional<Anime> optionalAnimeanime = animeRepository.findById(id);
-    if (!optionalAnimeanime.isPresent()) {
-      return;
+    Optional<Anime> optionalAnime = animeRepository.findById(id);
+    if (optionalAnime.isEmpty()) {
+      throw new InvalidRequestException("Anime was not found.");
     }
-    Anime anime = optionalAnimeanime.get();
+    Anime anime = optionalAnime.get();
     if (updates.getTitle() == null && updates.getStartDate() == null
         && updates.getEndDate() == null) {
       throw new InvalidRequestException("Updates were not provided.");
