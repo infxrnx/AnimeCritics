@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class CreateNomination {
-    private String name;
+  private String name;
 }

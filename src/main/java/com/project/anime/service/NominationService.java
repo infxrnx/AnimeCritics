@@ -67,11 +67,13 @@ public class NominationService {
     nominationRepository.deleteById(id);
   }
 
-    public void addAnimeToNomination(Integer nominationId, Integer animeId) {
+  public void addAnimeToNomination(Integer nominationId, Integer animeId) {
 
-        Nomination nomination = nominationRepository.findById(nominationId).orElseThrow(() -> new RuntimeException("Номинация с ID " + nominationId + " не найдена"));
+    Nomination nomination = nominationRepository.findById(nominationId)
+        .orElseThrow(() -> new RuntimeException("Номинация с ID " + nominationId + " не найдена"));
 
-        Anime anime = animeRepository.findById(animeId).orElseThrow(() -> new RuntimeException("Аниме с ID " + animeId + " не найдено"));
+    Anime anime = animeRepository.findById(animeId)
+        .orElseThrow(() -> new RuntimeException("Аниме с ID " + animeId + " не найдено"));
 
     nomination.addCandidates(anime);
     anime.addNomination(nomination);
@@ -79,7 +81,9 @@ public class NominationService {
     cache.remove(nominationId);
   }
 
-  public List<Anime> findAnimeInNominationWithAverageRatingGreaterThanThreshold(Integer nominationId, Integer min){
-    return nominationRepository.findAnimeInNominationWithAverageRatingGreaterThanThreshold(nominationId, min);
+  public List<Anime> findAnimeInNominationWithAverageRatingGreaterThanThreshold(
+      Integer nominationId, Integer min) {
+    return nominationRepository.findAnimeInNominationWithAverageRatingGreaterThanThreshold(
+        nominationId, min);
   }
 }

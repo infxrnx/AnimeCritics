@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -27,14 +26,13 @@ public class Review {
 
   @JsonIgnoreProperties({"reviews", "totalRating", "reviewCount", "startDate", "endDate",
       "nominations"})
-//  @EqualsAndHashCode.Exclude
   @ManyToOne()
   @JoinColumn(name = "anime_id")
   private Anime anime;
 
-    public Review(String title, String text, Byte grade){
-        this.title = title;
-        this.text = text;
-        this.grade = grade;
-    }
+  public Review(String title, String text, Byte grade) {
+    this.title = title;
+    this.text = text;
+    this.grade = grade;
+  }
 }

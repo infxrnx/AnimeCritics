@@ -33,9 +33,11 @@ public class Nomination {
       inverseJoinColumns = {@JoinColumn(name = "anime_id")})
   private List<Anime> candidates = new ArrayList<>();
 
-    public Nomination(String name){
-        this.name = name;
-    }
+  public Nomination(String name) {
+    this.name = name;
+  }
 
-    public void addCandidates(Anime anime){this.candidates.add(anime);}
+  public void addCandidates(Anime anime) {
+    this.candidates.add(anime);
+  }
 }

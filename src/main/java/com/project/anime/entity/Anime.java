@@ -2,7 +2,6 @@ package com.project.anime.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,12 +10,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -38,28 +34,28 @@ public class Anime {
 
   private Integer reviewCount;
 
-    @JsonIgnoreProperties({"anime"})
-    @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private Set<Review> reviews = new HashSet<>();
+  @JsonIgnoreProperties({"anime"})
+  @OneToMany(mappedBy = "anime", cascade = CascadeType.ALL)
+  @ToString.Exclude
+  private Set<Review> reviews = new HashSet<>();
 
-    @ManyToMany(mappedBy = "candidates")
-    @ToString.Exclude
-    private Set<Nomination> nominations = new HashSet<>();
+  @ManyToMany(mappedBy = "candidates")
+  @ToString.Exclude
+  private Set<Nomination> nominations = new HashSet<>();
 
-    public void addReview(Review review){
-        reviews.add(review);
-    }
+  public Anime(String title, Date startDate, Date endDate) {
+    this.title = title;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.totalRating = 0;
+    this.reviewCount = 0;
+  }
 
-    public void addNomination(Nomination nomination){
-        nominations.add(nomination);
-    }
+  public void addReview(Review review) {
+    reviews.add(review);
+  }
 
-    public Anime(String title, Date startDate, Date endDate) {
-        this.title = title;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.totalRating = 0;
-        this.reviewCount = 0;
-    }
+  public void addNomination(Nomination nomination) {
+    nominations.add(nomination);
+  }
 }

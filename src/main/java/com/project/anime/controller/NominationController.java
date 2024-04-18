@@ -79,8 +79,10 @@ public class NominationController {
   }
 
   @GetMapping("/filter/{nominationId}")
-  public ResponseEntity<List<Anime>> findAnimeInNominationWithAverageRatingGreaterThanThreshold(@PathVariable Integer nominationId, @RequestParam
-  Integer min){
-    return new ResponseEntity<>(nominationService.findAnimeInNominationWithAverageRatingGreaterThanThreshold(nominationId, min), HttpStatus.OK);
+  public ResponseEntity<List<Anime>> findAnimeInNominationWithAverageRatingGreaterThanThreshold(
+      @PathVariable Integer nominationId, @RequestParam Integer min) {
+    return new ResponseEntity<>(
+        nominationService.findAnimeInNominationWithAverageRatingGreaterThanThreshold(nominationId,
+            min), HttpStatus.OK);
   }
 }
