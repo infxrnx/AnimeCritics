@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class AnimeServiceTest {
+  
   @InjectMocks
   private AnimeService animeService;
   @Mock
