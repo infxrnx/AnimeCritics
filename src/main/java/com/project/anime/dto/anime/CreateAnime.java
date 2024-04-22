@@ -7,6 +7,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
+
 public class CreateAnime {
   private String title;
   private Date startDate;
