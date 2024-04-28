@@ -66,7 +66,7 @@ class ReviewServiceTest {
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> reviewService.createReview(review));
-    verify(animeRepository).findById(eq(1));
+    verify(animeRepository).findById(1);
   }
 
   /**
@@ -128,7 +128,7 @@ class ReviewServiceTest {
     Review actualReviewById = reviewService.getReviewById(1);
 
     // Assert
-    verify(cacheEntity).get(eq(1));
+    verify(cacheEntity).get(1);
     assertSame(review, actualReviewById);
   }
 
@@ -143,7 +143,7 @@ class ReviewServiceTest {
 
     // Act and Assert
     assertThrows(ResourceNotFoundException.class, () -> reviewService.getReviewById(1));
-    verify(cacheEntity).get(eq(1));
+    verify(cacheEntity).get(1);
   }
 
   /**
@@ -192,7 +192,7 @@ class ReviewServiceTest {
     reviewService.updateReview(1, newReview);
 
     // Assert
-    verify(cacheEntity).remove(eq(1));
+    verify(cacheEntity).remove(1);
     verify(reviewRepository).save(isA(Review.class));
     assertEquals(1, newReview.getId().intValue());
   }
@@ -225,7 +225,7 @@ class ReviewServiceTest {
 
     // Act and Assert
     assertThrows(ResourceNotFoundException.class, () -> reviewService.updateReview(1, newReview));
-    verify(cacheEntity).remove(eq(1));
+    verify(cacheEntity).remove(1);
   }
 
   /**
@@ -293,8 +293,8 @@ class ReviewServiceTest {
     reviewService.partialUpdateReview(1, updates);
 
     // Assert
-    verify(cacheEntity).remove(eq(1));
-    verify(reviewRepository).findById(eq(1));
+    verify(cacheEntity).remove(1);
+    verify(reviewRepository).findById(1);
     verify(reviewRepository).save(isA(Review.class));
   }
 
@@ -345,8 +345,8 @@ class ReviewServiceTest {
     // Act and Assert
     assertThrows(ResourceNotFoundException.class,
         () -> reviewService.partialUpdateReview(1, updates));
-    verify(cacheEntity).remove(eq(1));
-    verify(reviewRepository).findById(eq(1));
+    verify(cacheEntity).remove(1);
+    verify(reviewRepository).findById(1);
   }
 
   /**
@@ -362,8 +362,8 @@ class ReviewServiceTest {
     reviewService.deleteReview(1);
 
     // Assert that nothing has changed
-    verify(cacheEntity).remove(eq(1));
-    verify(reviewRepository).deleteById(eq(1));
+    verify(cacheEntity).remove(1);
+    verify(reviewRepository).deleteById(1);
   }
 
   /**
@@ -377,6 +377,6 @@ class ReviewServiceTest {
 
     // Act and Assert
     assertThrows(ResourceNotFoundException.class, () -> reviewService.deleteReview(1));
-    verify(cacheEntity).remove(eq(1));
+    verify(cacheEntity).remove(1);
   }
 }

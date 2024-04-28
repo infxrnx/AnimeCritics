@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,10 +29,16 @@ public class AnimeController {
     this.animeService = animeService;
   }
 
+  @PostMapping("/bulk")
+  public ResponseEntity<String> createManyAnime(@RequestBody List<CreateAnime> newAnime) {
+    animeService.createBulkAnime(newAnime);
+    return new ResponseEntity<>(CREATE_SUCCESS_MESSAGE, HttpStatus.OK);
+  }
+
   @PostMapping
   public ResponseEntity<String> createAnime(@RequestBody CreateAnime newAnime) {
     animeService.createAnime(newAnime);
-    return new ResponseEntity<>(CREATE_SUCCESS_MESSAGE, HttpStatus.NOT_ACCEPTABLE);
+    return new ResponseEntity<>(CREATE_SUCCESS_MESSAGE, HttpStatus.OK);
   }
 
   @GetMapping
@@ -68,7 +73,7 @@ public class AnimeController {
   }
 
   @PostMapping("/filter")
-  public ResponseEntity<Void> filterAnime(){
+  public ResponseEntity<Void> filterAnime() {
     throw new NotImplementedException("This endpoint is not implemented.");
   }
 }

@@ -9,6 +9,7 @@ import com.project.anime.entity.Anime;
 import com.project.anime.entity.Nomination;
 import com.project.anime.repository.AnimeRepository;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,30 @@ public class AnimeService {
   public AnimeService(AnimeRepository animeRepository, CacheEntity<Integer, Anime> cache) {
     this.animeRepository = animeRepository;
     this.cache = cache;
+  }
+
+  public void createBulkAnime(List<CreateAnime> newAnime) {
+    if (newAnime == null || newAnime.isEmpty()) {
+      throw new ResourceNotFoundException("No anime were provided.");
+    }
+
+    List<String> errors = newAnime.stream()
+        .map(anime -> {
+          try {
+            createAnime(anime);
+            return null;
+          } catch (Exception e) {
+            return e.getMessage();
+          }
+        })
+        .filter(Objects::nonNull)
+        .toList();
+
+    cache.clear();
+    if (!errors.isEmpty()) {
+      throw new IllegalArgumentException(
+          "Errors occurred during bulk creation: " + String.join("   ||||   ", errors));
+    }
   }
 
   public void createAnime(CreateAnime anime) {

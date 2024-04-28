@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -47,6 +48,118 @@ class AnimeServiceTest {
   private CacheEntity<Integer, Anime> cacheEntity;
 
   /**
+   * Method under test: {@link AnimeService#createBulkAnime(List)}
+   */
+  @Test
+  void testCreateBulkAnime() {
+    // Arrange, Act and Assert
+    assertThrows(ResourceNotFoundException.class,
+        () -> animeService.createBulkAnime(new ArrayList<>()));
+  }
+
+  /**
+   * Method under test: {@link AnimeService#createBulkAnime(List)}
+   */
+  @Test
+  void testCreateBulkAnime2() {
+    // Arrange
+    Anime anime = new Anime();
+    anime.setEndDate(mock(Date.class));
+    anime.setId(1);
+    anime.setNominations(new HashSet<>());
+    anime.setReviewCount(3);
+    anime.setReviews(new HashSet<>());
+    anime.setStartDate(mock(Date.class));
+    anime.setTitle("Dr");
+    anime.setTotalRating(1);
+    when(animeRepository.save(Mockito.<Anime>any())).thenReturn(anime);
+    doNothing().when(cacheEntity).clear();
+
+    ArrayList<CreateAnime> newAnime = new ArrayList<>();
+    newAnime.add(new CreateAnime("Dr", mock(Date.class), mock(Date.class)));
+
+    // Act
+    animeService.createBulkAnime(newAnime);
+
+    // Assert
+    verify(cacheEntity).clear();
+    verify(animeRepository).save(isA(Anime.class));
+  }
+
+  /**
+   * Method under test: {@link AnimeService#createBulkAnime(List)}
+   */
+  @Test
+  void testCreateBulkAnime3() {
+    // Arrange
+    Anime anime = new Anime();
+    anime.setEndDate(mock(Date.class));
+    anime.setId(1);
+    anime.setNominations(new HashSet<>());
+    anime.setReviewCount(3);
+    anime.setReviews(new HashSet<>());
+    anime.setStartDate(mock(Date.class));
+    anime.setTitle("Dr");
+    anime.setTotalRating(1);
+    when(animeRepository.save(Mockito.<Anime>any())).thenReturn(anime);
+    doThrow(new ResourceNotFoundException("An error occurred")).when(cacheEntity).clear();
+
+    ArrayList<CreateAnime> newAnime = new ArrayList<>();
+    newAnime.add(new CreateAnime("Dr", mock(Date.class), mock(Date.class)));
+
+    // Act and Assert
+    assertThrows(ResourceNotFoundException.class, () -> animeService.createBulkAnime(newAnime));
+    verify(cacheEntity).clear();
+    verify(animeRepository).save(isA(Anime.class));
+  }
+
+  /**
+   * Method under test: {@link AnimeService#createBulkAnime(List)}
+   */
+  @Test
+  void testCreateBulkAnime4() {
+    // Arrange
+    Anime anime = new Anime();
+    anime.setEndDate(mock(Date.class));
+    anime.setId(1);
+    anime.setNominations(new HashSet<>());
+    anime.setReviewCount(3);
+    anime.setReviews(new HashSet<>());
+    anime.setStartDate(mock(Date.class));
+    anime.setTitle("Dr");
+    anime.setTotalRating(1);
+    when(animeRepository.save(Mockito.<Anime>any())).thenReturn(anime);
+    doNothing().when(cacheEntity).clear();
+
+    ArrayList<CreateAnime> newAnime = new ArrayList<>();
+    newAnime.add(new CreateAnime("Dr", mock(Date.class), mock(Date.class)));
+    newAnime.add(new CreateAnime("Dr", mock(Date.class), mock(Date.class)));
+
+    // Act
+    animeService.createBulkAnime(newAnime);
+
+    // Assert
+    verify(cacheEntity).clear();
+    verify(animeRepository, atLeast(1)).save(Mockito.<Anime>any());
+  }
+
+  /**
+   * Method under test: {@link AnimeService#createBulkAnime(List)}
+   */
+  @Test
+  void testCreateBulkAnime5() {
+    // Arrange
+    doNothing().when(cacheEntity).clear();
+
+    ArrayList<CreateAnime> newAnime = new ArrayList<>();
+    newAnime.add(null);
+
+    // Act and Assert
+    assertThrows(IllegalArgumentException.class, () -> animeService.createBulkAnime(newAnime));
+    verify(cacheEntity).clear();
+  }
+
+  /**
    * Method under test: {@link AnimeService#createAnime(CreateAnime)}
    */
   @Test
@@ -86,7 +199,7 @@ class AnimeServiceTest {
   void testCreateAnime3() {
     // Arrange
     when(animeRepository.save(Mockito.<Anime>any())).thenThrow(
-        new InvalidRequestException("An error occurred"));
+        new ResourceNotFoundException("An error occurred"));
 
     // Act and Assert
     assertThrows(InvalidRequestException.class,
@@ -118,10 +231,10 @@ class AnimeServiceTest {
   @Test
   void testGetAllAnime2() {
     // Arrange
-    when(animeRepository.findAll()).thenThrow(new InvalidRequestException("An error occurred"));
+    when(animeRepository.findAll()).thenThrow(new ResourceNotFoundException("An error occurred"));
 
     // Act and Assert
-    assertThrows(InvalidRequestException.class, () -> animeService.getAllAnime());
+    assertThrows(ResourceNotFoundException.class, () -> animeService.getAllAnime());
     verify(animeRepository).findAll();
   }
 
@@ -159,10 +272,10 @@ class AnimeServiceTest {
   void testGetAnimeById2() {
     // Arrange
     when(cacheEntity.get(Mockito.<Integer>any())).thenThrow(
-        new ResourceNotFoundException("An error occurred"));
+        new InvalidRequestException("An error occurred"));
 
     // Act and Assert
-    assertThrows(ResourceNotFoundException.class, () -> animeService.getAnimeById(1));
+    assertThrows(InvalidRequestException.class, () -> animeService.getAnimeById(1));
     verify(cacheEntity).get(eq(1));
   }
 
@@ -209,7 +322,7 @@ class AnimeServiceTest {
   @Test
   void testUpdateAnime2() {
     // Arrange
-    doThrow(new InvalidRequestException("An error occurred")).when(cacheEntity)
+    doThrow(new ResourceNotFoundException("An error occurred")).when(cacheEntity)
         .remove(Mockito.<Integer>any());
 
     Anime newAnime = new Anime();
@@ -293,7 +406,7 @@ class AnimeServiceTest {
     anime.setTotalRating(1);
     Optional<Anime> ofResult = Optional.of(anime);
     when(animeRepository.findById(Mockito.<Integer>any())).thenReturn(ofResult);
-    doThrow(new InvalidRequestException("An error occurred")).when(cacheEntity)
+    doThrow(new ResourceNotFoundException("An error occurred")).when(cacheEntity)
         .remove(Mockito.<Integer>any());
 
     Anime updates = new Anime();
@@ -307,7 +420,8 @@ class AnimeServiceTest {
     updates.setTotalRating(1);
 
     // Act and Assert
-    assertThrows(InvalidRequestException.class, () -> animeService.partialUpdateAnime(1, updates));
+    assertThrows(ResourceNotFoundException.class,
+        () -> animeService.partialUpdateAnime(1, updates));
     verify(cacheEntity).remove(eq(1));
     verify(animeRepository).findById(eq(1));
   }
@@ -382,11 +496,11 @@ class AnimeServiceTest {
     anime.setTotalRating(1);
     Optional<Anime> ofResult = Optional.of(anime);
     when(animeRepository.findById(Mockito.<Integer>any())).thenReturn(ofResult);
-    doThrow(new InvalidRequestException("An error occurred")).when(cacheEntity)
+    doThrow(new ResourceNotFoundException("An error occurred")).when(cacheEntity)
         .remove(Mockito.<Integer>any());
 
     // Act and Assert
-    assertThrows(InvalidRequestException.class, () -> animeService.deleteAnime(1));
+    assertThrows(ResourceNotFoundException.class, () -> animeService.deleteAnime(1));
     verify(cacheEntity).remove(eq(1));
     verify(animeRepository).findById(eq(1));
   }
