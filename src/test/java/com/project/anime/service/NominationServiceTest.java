@@ -139,7 +139,7 @@ class NominationServiceTest {
     Nomination actualNominationById = nominationService.getNominationById(1);
 
     // Assert
-    verify(cacheEntity).get(eq(1));
+    verify(cacheEntity).get(1);
     assertSame(nomination, actualNominationById);
   }
 
@@ -154,7 +154,7 @@ class NominationServiceTest {
 
     // Act and Assert
     assertThrows(ResourceNotFoundException.class, () -> nominationService.getNominationById(1));
-    verify(cacheEntity).get(eq(1));
+    verify(cacheEntity).get(1);
   }
 
   /**
@@ -180,7 +180,7 @@ class NominationServiceTest {
     nominationService.updateNomination(1, newNomination);
 
     // Assert
-    verify(cacheEntity).remove(eq(1));
+    verify(cacheEntity).remove(1);
     verify(nominationRepository).save(isA(Nomination.class));
     assertEquals(1, newNomination.getId().intValue());
   }
@@ -203,7 +203,7 @@ class NominationServiceTest {
     // Act and Assert
     assertThrows(ResourceNotFoundException.class,
         () -> nominationService.updateNomination(1, newNomination));
-    verify(cacheEntity).remove(eq(1));
+    verify(cacheEntity).remove(1);
   }
 
   /**
@@ -236,8 +236,8 @@ class NominationServiceTest {
     nominationService.partialUpdateNomination(1, updates);
 
     // Assert
-    verify(cacheEntity).remove(eq(1));
-    verify(nominationRepository).findById(eq(1));
+    verify(cacheEntity).remove(1);
+    verify(nominationRepository).findById(1);
     verify(nominationRepository).save(isA(Nomination.class));
   }
 
@@ -265,8 +265,8 @@ class NominationServiceTest {
     // Act and Assert
     assertThrows(ResourceNotFoundException.class,
         () -> nominationService.partialUpdateNomination(1, updates));
-    verify(cacheEntity).remove(eq(1));
-    verify(nominationRepository).findById(eq(1));
+    verify(cacheEntity).remove(1);
+    verify(nominationRepository).findById(1);
   }
 
   /**
@@ -287,7 +287,7 @@ class NominationServiceTest {
     // Act and Assert
     assertThrows(ResourceNotFoundException.class,
         () -> nominationService.partialUpdateNomination(1, updates));
-    verify(nominationRepository).findById(eq(1));
+    verify(nominationRepository).findById(1);
   }
 
   /**
@@ -303,8 +303,8 @@ class NominationServiceTest {
     nominationService.deleteNomination(1);
 
     // Assert that nothing has changed
-    verify(cacheEntity).remove(eq(1));
-    verify(nominationRepository).deleteById(eq(1));
+    verify(cacheEntity).remove(1);
+    verify(nominationRepository).deleteById(1);
   }
 
   /**
@@ -318,7 +318,7 @@ class NominationServiceTest {
 
     // Act and Assert
     assertThrows(ResourceNotFoundException.class, () -> nominationService.deleteNomination(1));
-    verify(cacheEntity).remove(eq(1));
+    verify(cacheEntity).remove(1);
   }
 
   /**
@@ -346,7 +346,7 @@ class NominationServiceTest {
     // Act and Assert
     assertThrows(ResourceNotFoundException.class,
         () -> nominationService.addAnimeToNomination(1, 1));
-    verify(nominationRepository).findById(eq(1));
+    verify(nominationRepository).findById(1);
   }
 
   /**
@@ -368,8 +368,8 @@ class NominationServiceTest {
     // Act and Assert
     assertThrows(ResourceNotFoundException.class,
         () -> nominationService.addAnimeToNomination(1, 1));
-    verify(animeRepository).findById(eq(1));
-    verify(nominationRepository).findById(eq(1));
+    verify(animeRepository).findById(1);
+    verify(nominationRepository).findById(1);
   }
 
   /**
@@ -390,8 +390,8 @@ class NominationServiceTest {
             .findAnimeInNominationWithAverageRatingGreaterThanThreshold(1, 1);
 
     // Assert
-    verify(nominationRepository).findAnimeInNominationWithAverageRatingGreaterThanThreshold(eq(1),
-        eq(1));
+    verify(nominationRepository).findAnimeInNominationWithAverageRatingGreaterThanThreshold(1,
+        1);
     assertTrue(actualFindAnimeInNominationWithAverageRatingGreaterThanThresholdResult.isEmpty());
     assertSame(animeList, actualFindAnimeInNominationWithAverageRatingGreaterThanThresholdResult);
   }
@@ -410,7 +410,7 @@ class NominationServiceTest {
     // Act and Assert
     assertThrows(ResourceNotFoundException.class,
         () -> nominationService.findAnimeInNominationWithAverageRatingGreaterThanThreshold(1, 1));
-    verify(nominationRepository).findAnimeInNominationWithAverageRatingGreaterThanThreshold(eq(1),
-        eq(1));
+    verify(nominationRepository).findAnimeInNominationWithAverageRatingGreaterThanThreshold(1,
+        1);
   }
 }

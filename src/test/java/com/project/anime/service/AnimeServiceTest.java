@@ -52,9 +52,9 @@ class AnimeServiceTest {
    */
   @Test
   void testCreateBulkAnime() {
-    // Arrange, Act and Assert
+    ArrayList<CreateAnime> arrayList = new ArrayList<>();
     assertThrows(ResourceNotFoundException.class,
-        () -> animeService.createBulkAnime(new ArrayList<>()));
+        () -> animeService.createBulkAnime(arrayList));
   }
 
   /**
@@ -200,10 +200,10 @@ class AnimeServiceTest {
     // Arrange
     when(animeRepository.save(Mockito.<Anime>any())).thenThrow(
         new ResourceNotFoundException("An error occurred"));
-
+    CreateAnime anime = new CreateAnime("Dr", mock(Date.class), mock(Date.class));
     // Act and Assert
     assertThrows(InvalidRequestException.class,
-        () -> animeService.createAnime(new CreateAnime("Dr", mock(Date.class), mock(Date.class))));
+        () -> animeService.createAnime(anime));
     verify(animeRepository).save(isA(Anime.class));
   }
 
@@ -260,7 +260,7 @@ class AnimeServiceTest {
     Anime actualAnimeById = animeService.getAnimeById(1);
 
     // Assert
-    verify(cacheEntity).get(eq(1));
+    verify(cacheEntity).get(1);
     verify(cacheEntity).put(eq(1), isA(Anime.class));
     assertSame(anime, actualAnimeById);
   }
@@ -276,7 +276,7 @@ class AnimeServiceTest {
 
     // Act and Assert
     assertThrows(InvalidRequestException.class, () -> animeService.getAnimeById(1));
-    verify(cacheEntity).get(eq(1));
+    verify(cacheEntity).get(1);
   }
 
   /**
@@ -311,7 +311,7 @@ class AnimeServiceTest {
     animeService.updateAnime(1, newAnime);
 
     // Assert
-    verify(cacheEntity).remove(eq(1));
+    verify(cacheEntity).remove(1);
     verify(animeRepository).save(isA(Anime.class));
     assertEquals(1, newAnime.getId().intValue());
   }
@@ -337,7 +337,7 @@ class AnimeServiceTest {
 
     // Act and Assert
     assertThrows(InvalidRequestException.class, () -> animeService.updateAnime(1, newAnime));
-    verify(cacheEntity).remove(eq(1));
+    verify(cacheEntity).remove(1);
   }
 
   /**
@@ -384,8 +384,8 @@ class AnimeServiceTest {
     animeService.partialUpdateAnime(1, updates);
 
     // Assert
-    verify(cacheEntity).remove(eq(1));
-    verify(animeRepository).findById(eq(1));
+    verify(cacheEntity).remove(1);
+    verify(animeRepository).findById(1);
     verify(animeRepository).save(isA(Anime.class));
   }
 
@@ -422,8 +422,8 @@ class AnimeServiceTest {
     // Act and Assert
     assertThrows(ResourceNotFoundException.class,
         () -> animeService.partialUpdateAnime(1, updates));
-    verify(cacheEntity).remove(eq(1));
-    verify(animeRepository).findById(eq(1));
+    verify(cacheEntity).remove(1);
+    verify(animeRepository).findById(1);
   }
 
   /**
@@ -447,7 +447,7 @@ class AnimeServiceTest {
 
     // Act and Assert
     assertThrows(InvalidRequestException.class, () -> animeService.partialUpdateAnime(1, updates));
-    verify(animeRepository).findById(eq(1));
+    verify(animeRepository).findById(1);
   }
 
   /**
@@ -474,9 +474,9 @@ class AnimeServiceTest {
     animeService.deleteAnime(1);
 
     // Assert
-    verify(cacheEntity).remove(eq(1));
-    verify(animeRepository).deleteById(eq(1));
-    verify(animeRepository).findById(eq(1));
+    verify(cacheEntity).remove(1);
+    verify(animeRepository).deleteById(1);
+    verify(animeRepository).findById(1);
   }
 
   /**
@@ -501,8 +501,8 @@ class AnimeServiceTest {
 
     // Act and Assert
     assertThrows(ResourceNotFoundException.class, () -> animeService.deleteAnime(1));
-    verify(cacheEntity).remove(eq(1));
-    verify(animeRepository).findById(eq(1));
+    verify(cacheEntity).remove(1);
+    verify(animeRepository).findById(1);
   }
 
   /**
@@ -537,9 +537,9 @@ class AnimeServiceTest {
     animeService.deleteAnime(1);
 
     // Assert
-    verify(cacheEntity).remove(eq(1));
-    verify(animeRepository).deleteById(eq(1));
-    verify(animeRepository).findById(eq(1));
+    verify(cacheEntity).remove(1);
+    verify(animeRepository).deleteById(1);
+    verify(animeRepository).findById(1);
   }
 
   /**
@@ -553,6 +553,6 @@ class AnimeServiceTest {
 
     // Act and Assert
     assertThrows(ResourceNotFoundException.class, () -> animeService.deleteAnime(1));
-    verify(animeRepository).findById(eq(1));
+    verify(animeRepository).findById(1);
   }
 }
