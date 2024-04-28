@@ -33,5 +33,4 @@ jobs:
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        run: mvn verify sonar:sonar -D sonar.host.url=https://sonarcloud.io -D sonar.organization=infxrnx -D sonar.projectKey=infxrnx_AnimeCritics -D SONAR_TOKEN=b4b1626526f055f258a65d7918fe97760d81de4e
