@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
   List<Review> findAllByTitle(String title);
+  List<Review> findAllByAnimeId(Integer animeId);
 }

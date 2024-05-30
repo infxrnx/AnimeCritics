@@ -1,5 +1,6 @@
 package com.project.anime.controller;
 
+import com.project.anime.aop.annotation.RequestStats;
 import com.project.anime.dto.nomination.CreateNomination;
 import com.project.anime.entity.Anime;
 import com.project.anime.entity.Nomination;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequestStats
 @RestController
 @RequestMapping("/api/nominations")
 public class NominationController {

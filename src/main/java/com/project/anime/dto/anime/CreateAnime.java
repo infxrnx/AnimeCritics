@@ -9,6 +9,6 @@ import lombok.Data;
 @Data
 public class CreateAnime {
   private String title;
-  private Date startDate;
-  private Date endDate;
+  private String startDate;
+  private String endDate;
 }

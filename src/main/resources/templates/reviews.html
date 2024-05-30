@@ -1,0 +1,20 @@
+<div th:each="r: ${reviews}" class="comment bac-item">
+  <div class="comment_content">
+
+    <div class="d-flex align-items-center mb-2 " style="background-color:rgba(0,0,0,.37);padding: 10px;border: 1px solid rgba(0,0,0,.37);border-radius: 6px">
+      <div class="comment-title" style="margin-right: 15px" th:text="${r.getTitle()}">
+        Лучший альбом в стиле west coust
+      </div>
+      <div class="tick-item tick-rating" th:text="${r.getGrade()}">HD</div>
+    </div>
+
+    <p th:text="${r.getText()}">Недавно узнал про этого исполнителя(узнал его через рекомендацию о том, что слушают еще фанаты Glocki52). Зацепил флоу в треке Разница, 1000000Р, Страгл. В некоторых треках получил не так сильно как в других треках в альбоме. Куплеты, рифма, структура очень хорошая, добавил в Любимые треки. Нравится как задевает тему про маму, что он ради нее работает, ради бабушки, текст очень хорошо написанный, с глубоким смыслом, прослушав пару раз альбом можно вникнуть в него, почувствовать то, что хотел передать сам исполнитель. Очень понравился альбом.</p>
+    <div class="cld-like-dislike-wrap cld-custom">
+      <div class="cld-like-wrap  cld-common-wrap">
+        <a href="javascript:void(0)" class="cld-like-trigger cld-like-dislike-trigger  " title="" data-comment-id="79368" data-trigger-type="like" data-restriction="user" data-already-liked="0" >
+          <img src="./Whole Lotta Swag - NEW COAST на Риса за Творчество_files/ricenew.png" alt="">
+        </a>
+        <span class="cld-like-count-wrap cld-count-wrap">    </span>
+      </div></div>
+  </div>
+</div>

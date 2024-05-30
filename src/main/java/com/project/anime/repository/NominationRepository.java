@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface NominationRepository extends JpaRepository<Nomination, Integer> {
   @Query("SELECT a FROM Anime a JOIN a.nominations n WHERE n.id = :nominationId "
-      + "AND (a.reviewCount > 0 AND a.totalRating / a.reviewCount > :ratingThreshold)")
+      + "AND (a.reviewsCount > 0 AND a.totalRating / a.reviewsCount > :ratingThreshold)")
   List<Anime> findAnimeInNominationWithAverageRatingGreaterThanThreshold(
       @Param("nominationId") Integer nominationId,
       @Param("ratingThreshold") Integer ratingThreshold);

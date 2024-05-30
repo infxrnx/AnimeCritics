@@ -2,7 +2,6 @@ package com.project.anime.service;
 
 import com.project.anime.aop.annotation.Logging;
 import com.project.anime.aop.exception.ResourceNotFoundException;
-import com.project.anime.cache.CacheEntity;
 import com.project.anime.dto.review.CreateReview;
 import com.project.anime.entity.Anime;
 import com.project.anime.entity.Review;
@@ -10,19 +9,21 @@ import com.project.anime.repository.AnimeRepository;
 import com.project.anime.repository.ReviewRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Logging
 @Service
 public class ReviewService {
   private final ReviewRepository reviewRepository;
   private final AnimeRepository animeRepository;
-  private final CacheEntity<Integer, Review> cache;
 
-  public ReviewService(ReviewRepository reviewRepository, AnimeRepository animeRepository,
-                       CacheEntity<Integer, Review> cache) {
+  public ReviewService(ReviewRepository reviewRepository, AnimeRepository animeRepository) {
     this.reviewRepository = reviewRepository;
     this.animeRepository = animeRepository;
-    this.cache = cache;
+  }
+
+  public List<Review> getReviewsByAnimeId(Integer animeId) {
+    return reviewRepository.findAllByAnimeId(animeId);
   }
 
   public void createReview(CreateReview review) {
@@ -30,8 +31,8 @@ public class ReviewService {
     Anime anime = animeRepository.findById(review.getAnimeId())
         .orElseThrow(() -> new RuntimeException("Anime not found"));
     newReview.setAnime(anime);
+    anime.setReviewsCount(anime.getReviewsCount() + 1);
     anime.addReview(newReview);
-    anime.setReviewCount(anime.getReviewCount() + 1);
     anime.setTotalRating(anime.getTotalRating() + newReview.getGrade());
     reviewRepository.save(newReview);
   }
@@ -41,16 +42,11 @@ public class ReviewService {
   }
 
   public Review getReviewById(Integer id) {
-    Review review = cache.get(id);
-    if (review == null) {
-      review = reviewRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Review was not found"));
-    }
-    return review;
+    return reviewRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Review was not found"));
   }
 
   public void updateReview(Integer id, Review newReview) {
     newReview.setId(id);
-    cache.remove(id);
     reviewRepository.save(newReview);
   }
 
@@ -67,12 +63,10 @@ public class ReviewService {
     if (review.getGrade() != null) {
       review.setGrade(updates.getGrade());
     }
-    cache.remove(id);
     reviewRepository.save(review);
   }
 
   public void deleteReview(Integer id) {
-    cache.remove(id);
     reviewRepository.deleteById(id);
   }
 

@@ -1,80 +1,126 @@
 package com.project.anime.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.anime.aop.annotation.Logging;
 import com.project.anime.aop.exception.InvalidRequestException;
 import com.project.anime.aop.exception.ResourceNotFoundException;
-import com.project.anime.cache.CacheEntity;
-import com.project.anime.dto.anime.CreateAnime;
 import com.project.anime.entity.Anime;
 import com.project.anime.entity.Nomination;
 import com.project.anime.repository.AnimeRepository;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Logging
 @Service
 public class AnimeService {
   private final AnimeRepository animeRepository;
-  private final CacheEntity<Integer, Anime> cache;
-
-  public AnimeService(AnimeRepository animeRepository, CacheEntity<Integer, Anime> cache) {
+  public AnimeService(AnimeRepository animeRepository) {
     this.animeRepository = animeRepository;
-    this.cache = cache;
+  }
+  private static final String[] seasons = {
+      "Winter", "Winter", "Spring", "Spring", "Summer", "Summer",
+      "Summer", "Summer", "Fall", "Fall", "Winter", "Winter"
+  };
+  public String getSeason( Date date ) {
+    return seasons[ date.getMonth() ];
+  }
+  public Integer totalPages(int animePerPage) {
+    return (int) Math.ceil((double) animeRepository.count() / animePerPage);
   }
 
-  public void createBulkAnime(List<CreateAnime> newAnime) {
-    if (newAnime == null || newAnime.isEmpty()) {
-      throw new ResourceNotFoundException("No anime were provided.");
-    }
-
-    List<String> errors = newAnime.stream()
-        .map(anime -> {
-          try {
-            createAnime(anime);
-            return null;
-          } catch (Exception e) {
-            return e.getMessage();
-          }
-        })
-        .filter(Objects::nonNull)
-        .toList();
-
-    cache.clear();
-    if (!errors.isEmpty()) {
-      throw new IllegalArgumentException(
-          "Errors occurred during bulk creation: " + String.join("   ||||   ", errors));
-    }
+  public List<Anime> getAnimeByTitle(String title){
+    return animeRepository.findByTitleContainingIgnoreCase(title);
   }
 
-  public void createAnime(CreateAnime anime) {
+  public void createAnime(String title) {
+    if (animeRepository.findByTitle(title).isPresent()) {
+      return;
+    }
     try {
-      Anime newAnime = new Anime(anime.getTitle(), anime.getStartDate(), anime.getEndDate());
-      animeRepository.save(newAnime);
-    } catch (Exception e) {
-      throw new InvalidRequestException(e.getMessage());
+      ObjectMapper objectMapper = new ObjectMapper();
+      RestTemplate restTemplate = new RestTemplate();
+      HttpHeaders headers = new HttpHeaders();
+      headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+      String url = "https://api.jikan.moe/v4/anime?" + "q=" + title;
+      HttpEntity<String> entity = new HttpEntity<>(headers);
+
+      ResponseEntity<String> response =
+          restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+      JsonNode jsonNode = objectMapper.readTree(response.getBody()).get("data").get(0);
+
+      Date startDate = new Date(jsonNode.get("aired").get("prop").get("from").get("year").asInt() - 1900,
+          jsonNode.get("aired").get("prop").get("from").get("month").asInt() - 1,
+          jsonNode.get("aired").get("prop").get("from").get("day").asInt());
+      Date endDate = startDate;
+      if (jsonNode.get("aired").hasNonNull("to")){
+          endDate = new Date(jsonNode.get("aired").get("prop").get("to").get("year").asInt() - 1900,
+              jsonNode.get("aired").get("prop").get("to").get("month").asInt() - 1,
+              jsonNode.get("aired").get("prop").get("to").get("day").asInt());
+      }
+      List<String> synonyms = new ArrayList<>();
+      for (final JsonNode objNode : jsonNode.get("title_synonyms")) {
+        synonyms.add(objNode.asText());
+      }
+      List<String> producers = new ArrayList<>();
+      for (final JsonNode objNode : jsonNode.get("producers")) {
+        producers.add(objNode.get("name").asText());
+      }
+      List<String> studios = new ArrayList<>();
+      for (final JsonNode objNode : jsonNode.get("studios")) {
+        studios.add(objNode.get("name").asText());
+      }
+      List<String> genres = new ArrayList<>();
+      for (final JsonNode objNode : jsonNode.get("genres")) {
+        genres.add(objNode.get("name").asText());
+      }
+      Anime anime = new Anime(
+          jsonNode.get("title_english").asText(),
+          startDate,
+          endDate,
+          jsonNode.get("images").get("jpg").get("image_url").asText(),
+          jsonNode.get("episodes").asInt(),
+          jsonNode.get("status").asText(),
+          jsonNode.get("rating").asText(),
+          jsonNode.get("title_japanese").asText(),
+          String.join(", ", synonyms),
+          jsonNode.get("type").asText(),
+          Integer.parseInt(jsonNode.get("duration").asText().substring(0,2)),
+          getSeason(startDate) + " " + (endDate.getYear() + 1900),
+          String.join(", ", producers),
+          String.join(", ", studios),
+          String.join(", ", genres),
+          jsonNode.get("synopsis").asText(),
+          jsonNode.get("trailer").get("images").get("large_image_url").asText()
+      );
+      animeRepository.save(anime);
+    } catch (Exception e){
+      System.out.println(e.getMessage());
     }
   }
 
   public List<Anime> getAllAnime() {
-    return animeRepository.findAll();
+    List<Anime> list = animeRepository.findAll();
+    return list;
   }
 
   public Anime getAnimeById(Integer id) {
-    Anime anime = cache.get(id);
-    if (anime == null) {
-      anime = animeRepository.findById(id).orElseThrow(
+    return animeRepository.findById(id).orElseThrow(
           () -> new ResourceNotFoundException("Anime (with id = " + id + ") not found"));
-    }
-    cache.put(id, anime);
-    return anime;
   }
 
   public void updateAnime(Integer id, Anime newAnime) {
     try {
       newAnime.setId(id);
-      cache.remove(id);
       animeRepository.save(newAnime);
     } catch (Exception e) {
       throw new InvalidRequestException(e.getMessage());
@@ -100,7 +146,6 @@ public class AnimeService {
     if (updates.getEndDate() != null) {
       anime.setEndDate(updates.getEndDate());
     }
-    cache.remove(id);
     animeRepository.save(anime);
   }
 
@@ -112,7 +157,6 @@ public class AnimeService {
       nomination.getCandidates().remove(anime);
     }
     anime.getNominations().clear();
-    cache.remove(id);
     animeRepository.deleteById(id);
   }
 

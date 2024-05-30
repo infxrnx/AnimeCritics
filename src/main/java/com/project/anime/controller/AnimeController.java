@@ -1,5 +1,6 @@
 package com.project.anime.controller;
 
+import com.project.anime.aop.annotation.RequestStats;
 import com.project.anime.aop.exception.NotImplementedException;
 import com.project.anime.dto.anime.CreateAnime;
 import com.project.anime.entity.Anime;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequestStats
 @RestController
 @RequestMapping("/api/anime")
 public class AnimeController {
@@ -29,15 +32,9 @@ public class AnimeController {
     this.animeService = animeService;
   }
 
-  @PostMapping("/bulk")
-  public ResponseEntity<String> createManyAnime(@RequestBody List<CreateAnime> newAnime) {
-    animeService.createBulkAnime(newAnime);
-    return new ResponseEntity<>(CREATE_SUCCESS_MESSAGE, HttpStatus.OK);
-  }
-
-  @PostMapping
-  public ResponseEntity<String> createAnime(@RequestBody CreateAnime newAnime) {
-    animeService.createAnime(newAnime);
+  @PostMapping()
+  public ResponseEntity<String> createAnime(@RequestParam String title) {
+    animeService.createAnime(title);
     return new ResponseEntity<>(CREATE_SUCCESS_MESSAGE, HttpStatus.OK);
   }
 

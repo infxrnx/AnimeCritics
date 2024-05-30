@@ -1,5 +1,6 @@
 package com.project.anime.controller;
 
+import com.project.anime.aop.annotation.RequestStats;
 import com.project.anime.dto.review.CreateReview;
 import com.project.anime.entity.Review;
 import com.project.anime.service.ReviewService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
+@RequestStats
 @RestController
 @RequestMapping("/api/reviews")
 public class ReviewController {

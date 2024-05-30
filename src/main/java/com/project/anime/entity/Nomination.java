@@ -9,14 +9,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Nomination {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +32,9 @@ public class Nomination {
 
   @Column(unique = true)
   private String name;
+
+  @CreationTimestamp
+  private Date createdDate;
 
   @JsonIgnoreProperties({"reviews", "totalRating", "reviewCount", "startDate", "endDate",
       "nominations"})

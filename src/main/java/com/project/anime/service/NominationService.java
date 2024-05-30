@@ -2,7 +2,6 @@ package com.project.anime.service;
 
 import com.project.anime.aop.annotation.Logging;
 import com.project.anime.aop.exception.ResourceNotFoundException;
-import com.project.anime.cache.CacheEntity;
 import com.project.anime.dto.nomination.CreateNomination;
 import com.project.anime.entity.Anime;
 import com.project.anime.entity.Nomination;
@@ -16,14 +15,11 @@ import org.springframework.stereotype.Service;
 public class NominationService {
   private final NominationRepository nominationRepository;
   private final AnimeRepository animeRepository;
-  private final CacheEntity<Integer, Nomination> cache;
 
   public NominationService(NominationRepository nominationRepository,
-                           AnimeRepository animeRepository,
-                           CacheEntity<Integer, Nomination> cache) {
+                           AnimeRepository animeRepository) {
     this.nominationRepository = nominationRepository;
     this.animeRepository = animeRepository;
-    this.cache = cache;
   }
 
   public void createNomination(CreateNomination newNominationData) {
@@ -36,17 +32,12 @@ public class NominationService {
   }
 
   public Nomination getNominationById(Integer id) {
-    Nomination nomination = cache.get(id);
-    if (nomination == null) {
-      nomination = nominationRepository.findById(id).orElseThrow(
+    return nominationRepository.findById(id).orElseThrow(
           () -> new ResourceNotFoundException("Nomination (with id = " + id + ") not found"));
-    }
-    return nomination;
   }
 
   public void updateNomination(Integer id, Nomination newNomination) {
     newNomination.setId(id);
-    cache.remove(id);
     nominationRepository.save(newNomination);
   }
 
@@ -58,12 +49,10 @@ public class NominationService {
     if (updates.getName() != null) {
       nomination.setName(updates.getName());
     }
-    cache.remove(id);
     nominationRepository.save(nomination);
   }
 
   public void deleteNomination(Integer id) {
-    cache.remove(id);
     nominationRepository.deleteById(id);
   }
 
@@ -78,7 +67,6 @@ public class NominationService {
     nomination.addCandidates(anime);
     anime.addNomination(nomination);
     nominationRepository.save(nomination);
-    cache.remove(nominationId);
   }
 
   public List<Anime> findAnimeInNominationWithAverageRatingGreaterThanThreshold(

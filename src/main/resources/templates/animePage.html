@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout ">
+<head>
+    <title th:text="${anime.getTitle()}">HTMX-Demo</title>
+    <link rel="stylesheet" href="../static/css/styles.min.css">
+</head>
+<body>
+<section layout:fragment="content">
+    <div id="ani_detail">
+        <div class="ani_detail-stage">
+            <div class="container">
+                <div class="anis-cover-wrap">
+                    <div class="anis-cover"
+                         th:style="'background-image:url('+ ${anime.getBackgroundUrl()} + ')'"></div>
+                </div>
+                <div class="anis-content">
+                    <div class="anisc-poster">
+                        <div class="film-poster">
+                            <img th:src="${anime.getImageUrl()}" class="film-poster-img">
+                        </div>
+                    </div>
+                    <div class="anisc-detail">
+                        <div class="d-flex align-items-center" style="margin-bottom: 12px">
+                            <h2 class="film-name dynamic-name mb-0" th:text="${anime.getTitle()}" style="padding-right: 12px">
+                                Mob Psycho 100 (7.8)</h2>
+                            <div class="tick">
+                                <div class="tick-item tick-rating" th:text="${anime.getRating()}">HD</div>
+                            </div>
+                        </div>
+                        <div id="mal-sync"></div>
+                        <div class="film-stats">
+                            <div class="tick">
+
+                                <div class="tick-item tick-pg">PG-13</div>
+
+                                <div class="tick-item tick-quality">HD</div>
+
+                                <div class="tick-item tick-eps" th:text="${anime.getEpisodes()}">-1</div>
+
+                                <span class="dot"></span>
+                                <span class="item" th:text="${anime.getType()}">TV</span>
+                                <span class="dot"></span>
+                                <span class="item" th:text="${anime.getDuration()}">24m</span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+
+                        <div class="film-description m-hide">
+                            <div class="text" th:text="${anime.getDescription()}">
+                                Eighth-grader Shigeo "Mob" Kageyama has tapped into his inner wellspring of psychic prowess at a young age. But the power quickly proves to be a liability when he realizes the potential danger in his skills. Choosing to suppress his power, Mob's only present use for his ability is to impress his longtime crush, Tsubomi, who soon grows bored of the same tricks.
+
+                                In order to effectuate control on his skills, Mob enlists himself under the wing of Arataka Reigen, a con artist claiming to be a psychic, who exploits Mob's powers for pocket change. Now, exorcising evil spirits on command has become a part of Mob's daily, monotonous life. However, the psychic energy he exerts is barely the tip of the iceberg; if his vast potential and unrestrained emotions run berserk, a cataclysmic event that would render him completely unrecognizable will be triggered. The progression toward Mob's explosion is rising and attempting to stop it is futile.
+
+                                [Written by MAL Rewrite]
+                            </div>
+                        </div>
+                    </div>
+                    <div class="anisc-info-wrap">
+                        <div class="anisc-info">
+                            <div class="item item-title w-hide">
+                                <span class="item-head">Overview:</span>
+                                <div class="text" th:text="${anime.getDescription()}">
+                                    Eighth-grader Shigeo "Mob" Kageyama has tapped into his inner wellspring of psychic prowess at a young age. But the power quickly proves to be a liability when he realizes the potential danger in his skills. Choosing to suppress his power, Mob's only present use for his ability is to impress his longtime crush, Tsubomi, who soon grows bored of the same tricks.
+
+                                    In order to effectuate control on his skills, Mob enlists himself under the wing of Arataka Reigen, a con artist claiming to be a psychic, who exploits Mob's powers for pocket change. Now, exorcising evil spirits on command has become a part of Mob's daily, monotonous life. However, the psychic energy he exerts is barely the tip of the iceberg; if his vast potential and unrestrained emotions run berserk, a cataclysmic event that would render him completely unrecognizable will be triggered. The progression toward Mob's explosion is rising and attempting to stop it is futile.
+
+                                    [Written by MAL Rewrite]
+                                </div>
+                            </div>
+
+                            <div class="item item-title">
+                                <span class="item-head">Synonyms:</span>
+                                <span class="name" th:text="${anime.getSynonyms()}">Mob Psycho Hyaku, Mob Psycho One Hundred</span>
+                            </div>
+
+                            <div class="item item-title">
+                                <span class="item-head">Aired:</span>
+                                <span class="name" th:text="${anime.getStartDate().toString()} + ' to ' + ${anime.getEndDate().toString()}">Jul 11, 2016 to Sep 27, 2016</span>
+                            </div>
+                            <div class="item item-title">
+                                <span class="item-head">Premiered:</span>
+                                <span class="name" th:text="${anime.getSeason()}">Summer 2016</span>
+                            </div>
+                            <div class="item item-title">
+                                <span class="item-head">Duration:</span>
+                                <span class="name" th:text="${anime.getDuration()} + 'm'">24m</span>
+                            </div>
+                            <div class="item item-title">
+                                <span class="item-head">Status:</span>
+                                <span class="name" th:text="${anime.getStatus()}">Finished Airing</span>
+                            </div>
+
+                            <div class="item item-list" style="margin-bottom: 5px">
+                                <span class="item-head">Genres:</span>
+
+                                <a th:text="${anime.getGenres()}">Comedy</a>
+                            </div>
+
+
+                            <div class="item item-title">
+                                <span class="item-head">Studios:</span>
+
+                                <a class="name" th:text="${anime.getStudios()}">Bones</a>
+
+                            </div>
+
+
+                            <div class="item item-title">
+                                <span class="item-head">Producers:</span>
+
+                                <a class="name" th:text="${anime.getProducers()}">Warner Bros. Japan</a>,
+
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <section class="block_area block_area-actors">
+            <div class="block_area-header">
+                <div class="float-left bah-heading mr-4">
+                    <h2 class="cat-heading">Characters & Voice Actors</h2>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <form
+                    hx-target="#reviews"
+                    hx-post="/reviews"
+                    hx-headers='{"X-API-KEY": "xxxxxxx"}'
+                    hx-ext="json-enc"
+            >
+                <input class="form-group" type="text" name="animeId" placeholder="id" th:value="${anime.getId()}" required hidden="hidden"><br>
+                <input class="form-group" type="text" name="title" placeholder="Title" required><br>
+                <input class="form-group" type="text" name="grade" placeholder="Grade" required><br>
+                <input class="form-group" type="text" name="text" placeholder="Text" required><br>
+                <button type="submit">Send</button>
+            </form>
+
+            <div id="response"></div>
+        </section>
+    </div>
+    <div class="container">
+        <section class="block_area block_area-actors">
+            <div class="block_area-header">
+                <div class="float-left bah-heading mr-4">
+                    <h2 class="cat-heading">Characters & Voice Actors</h2>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="block-actors-content">
+                <div class="bac-list-wrap" id="reviews">
+
+                    <div th:each="r: ${reviews}" class="comment bac-item">
+                        <div class="comment_content">
+
+                            <div class="d-flex align-items-center mb-2 justify-content-between" style="background-color:rgba(0,0,0,.37);padding: 10px;border: 1px solid rgba(0,0,0,.37);border-radius: 6px">
+                                <div class="comment-title" style="margin-right: 15px" th:text="${r.getTitle()}">
+                                    Лучший альбом в стиле west coust
+                                </div>
+                                <div class="tick-item tick-rating" th:text="${r.getGrade()}">HD</div>
+                            </div>
+                            <div th:text="${r.getText()}">
+                            </div>
+                            <div class="cld-like-dislike-wrap cld-custom">
+                                <div class="cld-like-wrap  cld-common-wrap">
+                                    <a href="javascript:void(0)" class="cld-like-trigger cld-like-dislike-trigger  " title="" data-comment-id="79368" data-trigger-type="like" data-restriction="user" data-already-liked="0" >
+                                        <img src="./Whole Lotta Swag - NEW COAST на Риса за Творчество_files/ricenew.png" alt="">
+                                    </a>
+                                    <span class="cld-like-count-wrap cld-count-wrap">    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+</body>
+</html>
+

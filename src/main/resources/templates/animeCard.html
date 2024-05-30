@@ -1,0 +1,8 @@
+<div class="card w-300 h-400 mb-2 shadow-lg p-3" style="background: #282828;width: 18rem;border: 1px solid rgba(255,255,255,.06);border-radius: 25px" th:fragment="animeCard" >
+    <div class="container">
+        <img th:src="${imageUrl}" class="card-img-top object-fit-contain" alt="...">
+    </div>
+    <div class="card-body">
+        <a th:hx-get="@{/anime(title=${title})}" hx-swap="outerHTML" hx-target="#page" class="card-text text-white" th:text="${title}"></a>
+    </div>
+</div>
