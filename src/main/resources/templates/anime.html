@@ -1,0 +1,27 @@
+<div th:each="a: ${anime}" class="flw-item">
+  <div class="film-poster">
+    <div class="tick ltr">
+      <div class="tick-item tick-eps" th:text="${a.getEpisodes()}">-1</div>
+    </div>
+
+    <img th:src="${a.getImageUrl()}" class="film-poster-img lazyload"
+         alt="Mob Psycho 100">
+    <a style="cursor:pointer" class="film-poster-ahref item-qtip" title="Mob Psycho 100" data-id="101"><i
+            class="fas fa-play" th:hx-get="'/anime?title=' + ${a.getTitle()}" hx-swap="outerHTML" hx-target="#page"></i></a>
+  </div>
+  <div class="film-detail">
+    <h3 class="film-name">
+      <a style="cursor:pointer" th:text="${a.getTitle()}" title="Mob Psycho 100" class="dynamic-name"
+         data-jname="Mob Psycho 100" th:hx-get="'/anime?title=' + ${a.getTitle()}" hx-swap="outerHTML" hx-target="#page">Mob Psycho 100</a></h3>
+    <div class="fd-infor">
+
+      <span class="fdi-item">TV</span>
+      <span class="dot"></span>
+      <span class="fdi-item fdi-duration">24m</span>
+      <span class="dot"></span>
+      <span class="fdi-item" th:text="${a.getEpisodes()} + ' episodes'"></span>
+
+    </div>
+  </div>
+  <div class="clearfix"></div>
+</div>

@@ -8,6 +8,7 @@ import com.project.anime.entity.Nomination;
 import com.project.anime.repository.AnimeRepository;
 import com.project.anime.repository.NominationRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Logging
@@ -26,7 +27,9 @@ public class NominationService {
     Nomination newNomination = new Nomination(newNominationData.getName());
     nominationRepository.save(newNomination);
   }
-
+  public Optional<Nomination> getNominationByName(String name) {
+    return nominationRepository.findNominationByNameIgnoreCase(name);
+  }
   public List<Nomination> getAllNominations() {
     return nominationRepository.findAll();
   }

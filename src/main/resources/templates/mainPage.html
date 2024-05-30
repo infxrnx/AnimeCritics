@@ -6,10 +6,16 @@
 <body>
 <section layout:fragment="content">
     <div class="container">
-        <div class="input-group pb-3 pt-3" style="background: #121212">
-            <input type="text" class="form-control" id="searchInput" placeholder="Search">
-            <button class="btn btn-outline-secondary btn-dark" type="button" id="searchButton">Search</button>
-        </div>
+
+        <form class="input-group pb-3 pt-3"
+              hx-target="#animes"
+              hx-post="/anime/search"
+              hx-headers='{"X-API-KEY": "xxxxxxx"}'
+              hx-ext="json-enc"
+                >
+            <input type="text" class="form-control" name="search" placeholder="Search">
+            <button class="btn btn-outline-secondary btn-dark" type="submit" id="searchButton">Search</button>
+        </form>
 
         <div class="block_area-header block_area-header-tabs">
             <div class="float-left bah-heading mr-4">
@@ -17,9 +23,9 @@
             </div>
             <div class="clearfix"></div>
         </div>
-        <div class="tab-content">
+        <div class="tab-content pt-1">
             <div class="block_area-content block_area-list film_list film_list-grid film_list-wfeature">
-                <div class="film_list-wrap">
+                <div class="film_list-wrap" id="animes">
                     <div th:each="a: ${anime}" class="flw-item">
                         <div class="film-poster">
                             <div class="tick ltr">
@@ -29,12 +35,12 @@
                             <img th:src="${a.getImageUrl()}" class="film-poster-img lazyload"
                                  alt="Mob Psycho 100">
                             <a style="cursor:pointer" class="film-poster-ahref item-qtip" title="Mob Psycho 100" data-id="101"><i
-                                    class="fas fa-play" th:hx-get="'/anime?title=' + ${a.getTitle()}" hx-swap="outerHTML" hx-target="#page"></i></a>
+                                    class="fas fa-play" th:hx-get="'/anime?title=' + ${a.getTitle()}" hx-swap="outerHTML" hx-target="#contentPage"></i></a>
                         </div>
                         <div class="film-detail">
                             <h3 class="film-name">
                                 <a style="cursor:pointer" th:text="${a.getTitle()}" title="Mob Psycho 100" class="dynamic-name"
-                                                     data-jname="Mob Psycho 100" th:hx-get="'/anime?title=' + ${a.getTitle()}" hx-swap="outerHTML" hx-target="#page">Mob Psycho 100</a></h3>
+                                                     data-jname="Mob Psycho 100" th:hx-get="'/anime?title=' + ${a.getTitle()}" hx-swap="outerHTML" hx-target="#contentPage">Mob Psycho 100</a></h3>
                             <div class="fd-infor">
 
                                 <span class="fdi-item">TV</span>

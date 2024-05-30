@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout ">
+<head>
+    <title>HTMX-Demo</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div>
+        <select name="make" hx-get="/add" hx-target="#properties">
+            <option value="nomination">Nominations</option>
+            <option value="Anime">Anime</option>
+        </select>
+    </div>
+    <div>
+        <div id="properties">
+            <form class="input-group pb-3 pt-3"
+                  hx-target="this"
+                  hx-post="/api/nominations/add"
+                  hx-swap="none"
+            >
+                <input type="text" class="form-control" name="title" placeholder="anime">
+                <input type="text" class="form-control" name="nomination" placeholder="nomination">
+                <button class="btn btn-outline-secondary btn-dark" type="submit" id="searchButton">Search</button>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>

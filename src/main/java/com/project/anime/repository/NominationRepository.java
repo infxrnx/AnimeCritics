@@ -3,6 +3,7 @@ package com.project.anime.repository;
 import com.project.anime.entity.Anime;
 import com.project.anime.entity.Nomination;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,4 +14,5 @@ public interface NominationRepository extends JpaRepository<Nomination, Integer>
   List<Anime> findAnimeInNominationWithAverageRatingGreaterThanThreshold(
       @Param("nominationId") Integer nominationId,
       @Param("ratingThreshold") Integer ratingThreshold);
+  Optional<Nomination> findNominationByNameIgnoreCase(String title);
 }

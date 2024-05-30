@@ -4,6 +4,7 @@ import com.project.anime.aop.annotation.RequestStats;
 import com.project.anime.dto.nomination.CreateNomination;
 import com.project.anime.entity.Anime;
 import com.project.anime.entity.Nomination;
+import com.project.anime.service.AnimeService;
 import com.project.anime.service.NominationService;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -27,9 +28,11 @@ public class NominationController {
   private static final String UPDATE_SUCCESS_MESSAGE = "Updated successfully!";
   private static final String CREATE_SUCCESS_MESSAGE = "Created successfully!";
   private final NominationService nominationService;
+  private final AnimeService animeService;
 
-  public NominationController(NominationService nominationService) {
+  public NominationController(NominationService nominationService, AnimeService animeService) {
     this.nominationService = nominationService;
+    this.animeService = animeService;
   }
 
   @PostMapping
@@ -69,10 +72,13 @@ public class NominationController {
     return new ResponseEntity<>(DELETE_SUCCESS_MESSAGE, HttpStatus.OK);
   }
 
-  @PostMapping("/{nominationId}/anime/{animeId}")
-  public ResponseEntity<String> addAnimeToNomination(@PathVariable Integer nominationId,
-                                                     @PathVariable Integer animeId) {
-    nominationService.addAnimeToNomination(nominationId, animeId);
+  @PostMapping("/add")
+  public ResponseEntity<String> addAnimeToNomination(@RequestParam String nomination,
+                                                     @RequestParam String title) {
+    createNomination(new CreateNomination(nomination));
+    Nomination nomination1 = nominationService.getNominationByName(nomination).get();
+    Anime anime = animeService.getAnimeByTitle(title).get(0);
+    nominationService.addAnimeToNomination(nomination1.getId(), anime.getId());
     return new ResponseEntity<>(UPDATE_SUCCESS_MESSAGE, HttpStatus.OK);
   }
 

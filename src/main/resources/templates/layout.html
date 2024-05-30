@@ -13,22 +13,33 @@
     <!--HTMX-->
     <script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/json-enc.js"></script>
-    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap-icons.css}"/>
 
 </head>
-<body id="page">
-<nav class="navbar navbar-expand-lg navbar-light">
-    <div class="container-fluid">
+<body>
+<div class="container" id="contentPage">
+    <div id="header mb-0" class="">
         <div class="container">
-            <a hx-get="/" hx-swap="outerHTML" hx-target="#page" class="text-white">Anime</a>
-            <a hx-get="/nominations" hx-swap="outerHTML" hx-target="#page" class="text-white">Nominations</a>
+            <div class="ml-0 mt-2">
+                <div class="hs-toggles pb-0">
+                    <a href="https://aniwatchtv.to/community/board" class="hst-item" data-toggle="tooltip" title="AniWatch Connect" hx-get="/anime" hx-trigger="click" hx-target="#contentPage" hx-swap="outerHTML">
+                        <div class="name" style="font-size: 20px"><span>Anime</span></div>
+                    </a>
+                    <a href="https://aniwatchtv.to/community/board" class="hst-item" data-toggle="tooltip" title="AniWatch Connect"  hx-get="/nominations" hx-trigger="click" hx-target="#contentPage" hx-swap="outerHTML">
+                        <div class="name" style="font-size: 20px"><span>Nominations</span></div>
+                    </a>
+                    <a href="https://aniwatchtv.to/community/board" class="hst-item" data-toggle="tooltip" title="AniWatch Connect"  hx-get="/add" hx-trigger="click" hx-target="#contentPage" hx-swap="outerHTML">
+                        <div class="name" style="font-size: 20px"><span>Add</span></div>
+                    </a>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
         </div>
-        <p class="navbar-text">Rendered at <!--suppress ThymeleafVariablesResolveInspection --> <span th:text="${#dates.format(now, 'dd/MMM/yyyy HH:mm')}"></span></p>
     </div>
-</nav>
-<section layout:fragment="content">
-    <p>Page content goes here</p>
-</section>
-<img alt="Loading Indicator" class="htmx-indicator" src="https://raw.githubusercontent.com/SamHerbert/SVG-Loaders/master/svg-loaders/spinning-circles.svg"/>
+    <section layout:fragment="content">
+        <p>Page content goes here</p>
+    </section>
+</div>
+
 </body>
 </html>

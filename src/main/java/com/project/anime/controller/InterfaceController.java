@@ -2,6 +2,7 @@ package com.project.anime.controller;
 
 import static java.lang.Thread.sleep;
 
+import com.project.anime.dto.anime.SearchAnime;
 import com.project.anime.dto.review.CreateReview;
 import com.project.anime.entity.Anime;
 import com.project.anime.entity.Nomination;
@@ -10,6 +11,7 @@ import com.project.anime.service.InterfaceService;
 import com.project.anime.service.NominationService;
 import com.project.anime.service.ReviewService;
 import java.util.List;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,11 +35,36 @@ public class InterfaceController {
     this.nominationService = nominationService;
   }
 
+  @GetMapping("/add")
+  public String addMenu(Model model, @RequestParam(required = false) String make){
+    if (make == null){
+      return "add";
+    }
+    if (make.equals("Anime")){
+      return "addAnime";
+    }
+    return "addNomination";
+  }
+
   @PostMapping("/reviews")
   public String getReviews(Model model, @RequestBody CreateReview review){
     reviewService.createReview(review);
     model.addAttribute("reviews", reviewService.getReviewsByAnimeId(review.getAnimeId()));
     return "reviews";
+  }
+
+  @PostMapping("/anime/search")
+  public String searchAnime(Model model,
+                            @RequestBody SearchAnime searchAnime){
+    searchAnime.setPage(1);
+    int animePerPage = 20;
+    List<Anime> anime = animeService.getAnimeByTitle(searchAnime.getSearch());
+    Integer totalPages = (int) Math.ceil((double) anime.size() / animePerPage);
+    if (searchAnime.getPage() == null || searchAnime.getPage() < 1 || searchAnime.getPage() > totalPages){
+      searchAnime.setPage(1);
+    }
+    model.addAttribute("anime", anime);
+    return "anime";
   }
   @GetMapping("/anime")
   public String getOneAnime(Model model, @RequestParam(value = "title", required = false) String title,
@@ -86,7 +113,7 @@ public class InterfaceController {
 
       model.addAttribute("nominations", nominations);
 
-      return "nominationsPage";
+      return "nominations";
     } catch (Exception e) {
       return "error";
     }
