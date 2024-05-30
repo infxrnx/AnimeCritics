@@ -58,15 +58,15 @@
                 <div class="pre-pagination mt-5 mb-5" bis_skin_checked="1">
                     <nav aria-label="Page navigation">
                         <ul class="pagination pagination-lg justify-content-center">
-                            <li th:if="${currentPage} != 1" class="page-item"><a title="First" class="page-link" href="https://aniwatchtv.to/search?keyword=one%20piece&amp;page=3">«</a>
-                            <li th:if="${currentPage} != 1" class="page-item"><a title="Previous" class="page-link" href="https://aniwatchtv.to/search?keyword=one%20piece&amp;page=3">‹</a>
-                            <li th:if="${currentPage} - 2 >= 1 " class="page-item"><a title="Page" th:text="${currentPage - 2}" class="page-link" href="https://aniwatchtv.to/search?keyword=one%20piece&amp;page=2">1</a></li>
-                            <li th:if="${currentPage} - 1 >= 1" class="page-item"><a title="Page" th:text="${currentPage - 1}" class="page-link" href="https://aniwatchtv.to/search?keyword=one%20piece&amp;page=3">2</a></li>
+                            <li th:if="${currentPage} != 1" class="page-item"><a title="First" class="page-link" th:href="'/anime?page=' + ${0} + '&title=' + ${searchTitle}">«</a>
+                            <li th:if="${currentPage} != 1" class="page-item"><a title="Previous" class="page-link" th:href="'/anime?page=' + ${currentPage - 1} + '&title=' + ${searchTitle}">‹</a>
+                            <li th:if="${currentPage} - 2 >= 1 " class="page-item"><a title="Page" th:text="${currentPage - 2}" class="page-link" th:href="'/anime?page=' + ${currentPage - 2} + '&title=' + ${searchTitle}">1</a></li>
+                            <li th:if="${currentPage} - 1 >= 1" class="page-item"><a title="Page" th:text="${currentPage - 1}" class="page-link" th:href="'/anime?page=' + ${currentPage - 1} + '&title=' + ${searchTitle}">2</a></li>
                             <li class="page-item active"><a class="page-link" th:text="${currentPage}"></a></li>
-                            <li th:if="${currentPage} + 1 <= ${totalPages}" class="page-item"><a th:text="${currentPage + 1}" title="Page" class="page-link" href="https://aniwatchtv.to/search?keyword=one%20piece&amp;page=2">4</a></li>
-                            <li th:if="${currentPage} + 2 <= ${totalPages}" class="page-item"><a th:text="${currentPage + 2}" title="Page" class="page-link" href="https://aniwatchtv.to/search?keyword=one%20piece&amp;page=3">5</a></li>
-                            <li th:if="${currentPage} != ${totalPages}" class="page-item"><a title="Next" class="page-link" href="https://aniwatchtv.to/search?keyword=one%20piece&amp;page=2">›</a></li>
-                            <li th:if="${currentPage} != ${totalPages}" class="page-item"><a title="Last" class="page-link" href="https://aniwatchtv.to/search?keyword=one%20piece&amp;page=3">»</a>
+                            <li th:if="${currentPage} + 1 <= ${totalPages}" class="page-item"><a th:text="${currentPage + 1}" title="Page" class="page-link" th:href="'/anime?page=' + ${currentPage+1} + '&title=' + ${searchTitle}">4</a></li>
+                            <li th:if="${currentPage} + 2 <= ${totalPages}" class="page-item"><a th:text="${currentPage + 2}" title="Page" class="page-link" th:href="'/anime?page=' + ${currentPage+2} + '&title=' + ${searchTitle}">5</a></li>
+                            <li th:if="${currentPage} != ${totalPages}" class="page-item"><a title="Next" class="page-link" th:href="'/anime?page=' + ${currentPage+1} + '&title=' + ${searchTitle}">›</a></li>
+                            <li th:if="${currentPage} != ${totalPages}" class="page-item"><a title="Last" class="page-link" th:href="'/anime?page=' + ${totalPages} + '&title=' + ${searchTitle}">»</a>
                         </li></ul>
                     </nav>
                 </div>
