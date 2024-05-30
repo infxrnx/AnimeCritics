@@ -24,6 +24,9 @@ services:
       - mysqldb
     environment:
       - spring.jpa.hibernate.ddl-auto=update
+      - spring.datasource.url=jdbc:mysql://viaduct.proxy.rlwy.net:11468/railway
+      - spring.datasource.username=root
+      - spring.datasource.password=EKmcZNkaSdQAQHGoLxleWGFBISoysmJU
     networks:
       springboot-mysql-net:
     restart: on-failure
